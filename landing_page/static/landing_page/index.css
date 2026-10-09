@@ -1,19 +1,32 @@
 section {
     padding: 60px 0;
+    position: relative; /* Garante que o .div-behind fique alinhado à section */
 }
 
-.crop {
-    width: 1000px; /* width of container */
-    height: 400px; /* height of container */
-    object-fit: cover;
+/* Container que limita o tamanho da imagem */
+.crop-container {
+    width: 100%;
+    max-width: 1000px;
+    height: 400px;
+    overflow: hidden;
+    position: relative;
+    margin: 0 auto;
 }
 
+/* Imagem ajustada corretamente */
+.crop-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Recorta a imagem proporcionalmente sem distorcer */
+}
+
+/* Div de fundo com ajuste de z-index */
 .div-behind {
-    z-index: -9;
+    z-index: 1; /* z-index positivo costuma ser mais seguro que valores negativos */
     position: absolute;
     background: #dee7e8;
     top: 60%;
     left: 5%;
     width: 90%;
     height: 105%;
-  }
+}

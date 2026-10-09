@@ -1,156 +1,173 @@
-<html lang="en">
+<!DOCTYPE html>
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
     {% load static %}
     <link rel="stylesheet" href="{% static 'landing_page/index.css' %}">
-    <title>Company Name</title>
+    <title>Marcos Oliveira - Engenharia Mecatrônica & Robótica</title>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href=""><span class="text-primary">Company</span>.com </a>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-white sticky-top border-bottom">
+        <div class="container-lg">
+            <a class="navbar-brand fw-bold" href="#"><span class="text-primary">Marcos</span>.dev</a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+                aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-md-auto">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Products
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Product 1</a></li>
-                            <li><a class="dropdown-item" href="#">Product 2</a></li>
-                            <li><a class="dropdown-item" href="#">Product 3</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Projects</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">News</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
-                    </li>
-                </ul>
-            </div>
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Log In</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-primary rounded-pill" href="#">Get Started</a>
-                    </li>
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="#intro">Início</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#highlights">Destaques</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#projects">Projetos & Pesquisa</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#skills">Competências</a></li>
                 </ul>
+                <div class="d-flex align-items-center gap-2">
+                    <a class="btn btn-outline-primary rounded-pill px-3" href="https://github.com" target="_blank">
+                        <i class="bi bi-github me-1"></i> GitHub
+                    </a>
+                    <a class="btn btn-primary rounded-pill px-4" href="#contact">Contato</a>
+                </div>
             </div>
-
         </div>
     </nav>
 
-    <section id="intro">
-        <div class="containter-lg">
-            <div class="row justify-content-center">
-                <div class="col-sm-1 text-center">
-                    Easier
-                </div>
-                <div class="col-sm-1 text-center">
-                    Faster
-                </div>
-                <div class="col-sm-1 text-center">
-                    Better
+    <!-- Hero Section / Apresentação -->
+    <section id="intro" class="position-relative overflow-hidden py-5">
+        <div class="container-lg">
+            <!-- Badges de Atuação -->
+            <div class="row justify-content-center mb-3">
+                <div class="col-auto d-flex gap-2 flex-wrap justify-content-center">
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2">Mecatrônica UFSC</span>
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2">Robótica & ROS 2</span>
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2">Sistemas Embarcados</span>
                 </div>
             </div>
+
+            <!-- Título Principal -->
             <div class="row justify-content-center">
-                <div class="col-sm-6 col-lg-5 text-center">
-                    <h1>Digitalize Your Processes and Get More Revenue</h1>
+                <div class="col-lg-9 text-center">
+                    <h1 class="display-4 fw-bold mb-3">Engenharia Mecatrônica & Robótica Autônoma</h1>
+                    <p class="lead text-muted mb-4">Desenvolvimento de firmware embarcado, arquiteturas ROS 2 / micro-ROS, simulação SITL em Gazebo, controle de enxames de drones e sistemas de automação industrial.</p>
+                    
+                    <!-- Call To Action -->
+                    <div class="d-flex justify-content-center gap-3 mb-5">
+                        <a href="#projects" class="btn btn-primary btn-lg rounded-pill px-4">Ver Projetos</a>
+                        <a href="#contact" class="btn btn-outline-secondary btn-lg rounded-pill px-4">Entrar em Contato</a>
+                    </div>
                 </div>
             </div>
+
+            <!-- Imagem em Destaque / Banner de Projeto -->
             <div class="row justify-content-center">
-                <div class="col-sm-5 col-lg-4 text-center">
-                    <p class="lead">Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-9 text-center">
-                    <img src="{% static 'landing_page/payment.jpg' %}" class="img-fluid rounded crop" alt="No image">
+                <div class="col-lg-10 text-center">
+                    <div class="crop-container rounded shadow-lg overflow-hidden">
+                        <img src="{% static 'landing_page/robotics_hero.jpg' %}" class="img-fluid crop" alt="Simulação e Sistemas de Robótica">
+                    </div>
                 </div>
             </div>
         </div>
         <div class="div-behind"></div>
     </section>
 
-    <section id="details">
+    <!-- Métricas & Destaques de Trajetória -->
+    <section id="highlights" class="bg-light py-5">
         <div class="container-lg">
-            <div class="row justify-content-center">
-                <div class="col-lg-4 text-center">
-                    <h1>99%</h1>
-                    <p>Lorem ipsum dolor sit.</p>
+            <div class="row justify-content-center text-center g-4">
+                <div class="col-md-4">
+                    <h2 class="display-5 fw-bold text-primary">ROS 2 & PX4</h2>
+                    <p class="text-muted fw-semibold">Controle Offboard, Enxames e Percepção SLAM</p>
                 </div>
-                <div class="col-lg-4 text-center">
-                    <h1>7,895</h1>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas.</p>
+                <div class="col-md-4">
+                    <h2 class="display-5 fw-bold text-primary">LASC & Draconis</h2>
+                    <p class="text-muted fw-semibold">Pesquisa em Swarm Robotics e Liderança de Eletrônica</p>
                 </div>
-                <div class="col-lg-4 text-center">
-                    <h1>40+</h1>
-                    <p>Lorem ipsum dolor sit amet consectetur.</p>
+                <div class="col-md-4">
+                    <h2 class="display-5 fw-bold text-primary">Hardware & FPGA</h2>
+                    <p class="text-muted fw-semibold">Design PCB no KiCad, micro-ROS em ESP32 e VHDL em Quartus</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="product1">
+    <!-- Seção do Projeto Principal / Pesquisa -->
+    <section id="projects" class="py-5">
         <div class="container-lg">
-            <div class="row justify-content-center">
-                <div class="col-11">
-                    <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic aut debitis impedit.</h1>
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-8 text-center">
+                    <h2 class="fw-bold">Projetos & Áreas de Atuação</h2>
+                    <p class="text-muted">Integração entre hardware embarcado, controle dinâmico e desenvolvimento de software para robótica.</p>
                 </div>
             </div>
-            <div class="row justify-content-center">
-                <div class="col-lg-5 col-10">
-                    <h6>Lorem ipsum dolor sit.</h6>
-                    <ul>
-                        <li>Lorem ipsum dolor sit.</li>
-                        <li>Lorem ipsum dolor sit amet.</li>
-                        <li>Lorem, ipsum dolor.</li>
-                        <li>Lorem ipsum dolor sit amet consectetur.</li>
+
+            <div class="row justify-content-center align-items-center g-5">
+                <div class="col-lg-6">
+                    <h3 class="fw-bold mb-3">Enxames de Drones Autônomos & Simulação SITL</h3>
+                    <p class="text-muted mb-4">Desenvolvimento de arquiteturas descentralizadas de formação líder-seguidor utilizando PX4 Autopilot, ROS 2 (`px4_ros_com`) e Gazebo SITL para validação em ambiente simulado e real.</p>
+                    
+                    <ul class="list-unstyled">
+                        <li class="mb-3 d-flex align-items-start">
+                            <i class="bi bi-cpu-fill text-primary me-2 fs-5"></i>
+                            <span><strong>Sistemas Embarcados:</strong> Integração micro-ROS em ESP32 com IMU (MPU6050) e controladores Kakute H7 / STM32.</span>
+                        </li>
+                        <li class="mb-3 d-flex align-items-start">
+                            <i class="bi bi-diagram-3-fill text-primary me-2 fs-5"></i>
+                            <span><strong>Controle & Visão:</strong> Kinematics, observadores de estado, loops de controle fechado e visão computacional com OpenCV.</span>
+                        </li>
+                        <li class="mb-3 d-flex align-items-start">
+                            <i class="bi bi-gear-wide-connected text-primary me-2 fs-5"></i>
+                            <span><strong>Automação & Lógica:</strong> Programação de PLCs (Ladder/ST em CODESYS/EcoStruxure) e modelagem de sistemas no PSIM e OpenModelica.</span>
+                        </li>
                     </ul>
                 </div>
-                <div class="col-lg-5 col-10">
-                    <img src="{% static 'landing_page/play.jpg' %}" class="img-fluid rounded" alt="No image">
+
+                <div class="col-lg-5">
+                    <img src="{% static 'landing_page/drone_swarm.jpg' %}" class="img-fluid rounded shadow" alt="Visualização Foxglove / Gazebo">
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Banner de Contato / Chamada Final -->
+    <section id="contact" class="bg-primary text-white py-5">
+        <div class="container-lg text-center py-4">
+            <h2 class="fw-bold mb-3">Vamos conversar ou colaborar num projeto?</h2>
+            <p class="lead mb-4 text-white-50">Aberto a conexões nas áreas de robótica, desenvolvimento embarcado e automação.</p>
+            <a href="mailto:seu-email@exemplo.com" class="btn btn-light btn-lg px-5 rounded-pill fw-semibold">
+                <i class="bi bi-envelope-fill me-2"></i>Enviar E-mail
+            </a>
+        </div>
+    </section>
 
-    <div class="container">
-        <footer class="py-3 my-4">
-            <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Features</a></li>
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Pricing</a></li>
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">FAQs</a></li>
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
-            </ul>
-            <p class="text-center text-muted">© 2022 Company, Inc</p>
-        </footer>
-    </div>
+    <!-- Rodapé -->
+    <footer class="bg-white py-4 border-top">
+        <div class="container-lg">
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center">
+                <p class="mb-2 mb-sm-0 text-muted">© 2026 Marcos Oliveira. Engenharia Mecatrônica UFSC.</p>
+                <ul class="nav">
+                    <li class="nav-item"><a href="#intro" class="nav-link px-2 text-muted">Início</a></li>
+                    <li class="nav-item"><a href="#projects" class="nav-link px-2 text-muted">Projetos</a></li>
+                    <li class="nav-item"><a href="https://github.com" target="_blank" class="nav-link px-2 text-muted">GitHub</a></li>
+                    <li class="nav-item"><a href="https://linkedin.com" target="_blank" class="nav-link px-2 text-muted">LinkedIn</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
 
-
-
-
+    <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
         crossorigin="anonymous"></script>
