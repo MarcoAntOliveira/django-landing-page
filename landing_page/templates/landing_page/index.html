@@ -30,10 +30,21 @@
 
             <div class="collapse navbar-collapse" id="mainNavbar">
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="#intro">Início</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#highlights">Destaques</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#projects">Projetos & Pesquisa</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#skills">Competências</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Início</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'index' %}#skills">Competências</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'index' %}#projects">Projetos</a></li>
+                    
+                    <!-- Links para as novas aplicações interativas -->
+                    <li class="nav-item">
+                        <a class="nav-link text-primary fw-bold" href="{% url 'swarm_simulation' %}" target="_blank">
+                            <i class="bi bi-box-seam me-1"></i> Simulação 3D
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-primary fw-bold" href="{% url 'hardware_dashboard' %}" target="_blank">
+                            <i class="bi bi-activity me-1"></i> Dashboard Foxglove
+                        </a>
+                    </li>
                 </ul>
                 <div class="d-flex align-items-center gap-2">
                     <a class="btn btn-outline-primary rounded-pill px-3" href="https://github.com" target="_blank">
@@ -103,33 +114,165 @@
         </div>
     </section>
 
-    <!-- Seção do Projeto Principal / Pesquisa -->
-    <section id="projects" class="py-5">
+    <!-- Seção de Competências Técnicas (Sequenciais) -->
+    <section id="skills" class="py-5">
         <div class="container-lg">
             <div class="row justify-content-center mb-5">
                 <div class="col-lg-8 text-center">
-                    <h2 class="fw-bold">Projetos & Áreas de Atuação</h2>
-                    <p class="text-muted">Integração entre hardware embarcado, controle dinâmico e desenvolvimento de software para robótica.</p>
+                    <h2 class="fw-bold display-6">Competências Técnicas</h2>
+                    <p class="text-muted lead">Domínio integrado desde a camada física e circuito impresso até algoritmos de alto nível e controle em nuvem/ROS.</p>
+                </div>
+            </div>
+
+            <!-- Competência 1: Robótica Autônoma & Software -->
+            <div class="row justify-content-center align-items-center g-5 mb-5 py-4 border-bottom">
+                <div class="col-lg-6">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div class="bg-primary text-white p-3 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                            <i class="bi bi-diagram-3-fill fs-4"></i>
+                        </div>
+                        <h3 class="fw-bold mb-0">Robótica Autônoma & Middleware</h3>
+                    </div>
+                    <p class="text-muted mb-4">Desenvolvimento de arquiteturas distribuídas e controle avançado para robôs terrestres e aéreos em ROS 2 e micro-ROS.</p>
+                    <ul class="list-unstyled">
+                        <li class="mb-3 d-flex align-items-start">
+                            <i class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                            <span><strong>PX4 Autopilot & Control Offboard:</strong> Navegação autônoma de veículos aéreos, malhas de controle e integração via `px4_ros_com`.</span>
+                        </li>
+                        <li class="mb-3 d-flex align-items-start">
+                            <i class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                            <span><strong>Simulação SITL & Ambientes Virtuais:</strong> Gazebo, `ros_gz_bridge` e monitoramento de dados via Foxglove Studio e QGroundControl.</span>
+                        </li>
+                        <li class="mb-3 d-flex align-items-start">
+                            <i class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                            <span><strong>Percepção & Visão Computacional:</strong> Pipelines OpenCV em C++/Python e SLAM para estimativa de pose e rastreamento.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-5">
+                    <div class="p-4 bg-light rounded shadow-sm border">
+                        <h5 class="fw-bold mb-3 text-secondary"><i class="bi bi-code-slash me-2"></i>Stack Prático</h5>
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="badge bg-white text-dark border px-3 py-2">ROS 2</span>
+                            <span class="badge bg-white text-dark border px-3 py-2">micro-ROS</span>
+                            <span class="badge bg-white text-dark border px-3 py-2">PX4</span>
+                            <span class="badge bg-white text-dark border px-3 py-2">Gazebo SITL</span>
+                            <span class="badge bg-white text-dark border px-3 py-2">C++</span>
+                            <span class="badge bg-white text-dark border px-3 py-2">Python</span>
+                            <span class="badge bg-white text-dark border px-3 py-2">OpenCV</span>
+                            <span class="badge bg-white text-dark border px-3 py-2">Foxglove</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Competência 2: Sistemas Embarcados & Hardware -->
+            <div class="row justify-content-center align-items-center g-5 mb-5 py-4 border-bottom flex-lg-row-reverse">
+                <div class="col-lg-6">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div class="bg-primary text-white p-3 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                            <i class="bi bi-cpu-fill fs-4"></i>
+                        </div>
+                        <h3 class="fw-bold mb-0">Sistemas Embarcados & Eletrônica</h3>
+                    </div>
+                    <p class="text-muted mb-4">Projetos de placas de circuito impresso (PCB) e firmware de tempo real para aquisição de sensores e atuação de motores.</p>
+                    <ul class="list-unstyled">
+                        <li class="mb-3 d-flex align-items-start">
+                            <i class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                            <span><strong>Microcontroladores & Firmware:</strong> ESP32, STM32, Raspberry Pi e integração de placas de voo (Kakute H7).</span>
+                        </li>
+                        <li class="mb-3 d-flex align-items-start">
+                            <i class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                            <span><strong>PCB Design & Comunicação:</strong> Projetos schematics/layout em KiCad, barramentos I2C, SPI, UART, CAN e ExpressLRS.</span>
+                        </li>
+                        <li class="mb-3 d-flex align-items-start">
+                            <i class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                            <span><strong>Lógica Digital em FPGA:</strong> Desenvolvimento em VHDL no Intel Quartus Prime para FPGAs Cyclone IV e MAX 10 (DE10-Lite).</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-5">
+                    <div class="p-4 bg-light rounded shadow-sm border">
+                        <h5 class="fw-bold mb-3 text-secondary"><i class="bi bi-tools me-2"></i>Ferramentas de Hardware</h5>
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="badge bg-white text-dark border px-3 py-2">KiCad</span>
+                            <span class="badge bg-white text-dark border px-3 py-2">PlatformIO</span>
+                            <span class="badge bg-white text-dark border px-3 py-2">ESP32</span>
+                            <span class="badge bg-white text-dark border px-3 py-2">STM32</span>
+                            <span class="badge bg-white text-dark border px-3 py-2">VHDL</span>
+                            <span class="badge bg-white text-dark border px-3 py-2">Quartus Prime</span>
+                            <span class="badge bg-white text-dark border px-3 py-2">ExpressLRS</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Competência 3: Controle, Modelagem & Automação Industrial -->
+            <div class="row justify-content-center align-items-center g-5 py-4">
+                <div class="col-lg-6">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div class="bg-primary text-white p-3 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                            <i class="bi bi-gear-wide-connected fs-4"></i>
+                        </div>
+                        <h3 class="fw-bold mb-0">Controle, Modelagem & Automação</h3>
+                    </div>
+                    <p class="text-muted mb-4">Sintonia de malhas de controle dinâmico, simulação física de sistemas mecatrônicos e automação industrial.</p>
+                    <ul class="list-unstyled">
+                        <li class="mb-3 d-flex align-items-start">
+                            <i class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                            <span><strong>Teoria de Controle & Cinemática:</strong> Controladores em espaço de estados, observadores de Luenberger, cinemática direta/inversa.</span>
+                        </li>
+                        <li class="mb-3 d-flex align-items-start">
+                            <i class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                            <span><strong>Simulação Dinâmica & Elétrica:</strong> Modelagem em MATLAB, Simulink, OpenModelica, Hopsan e PSIM.</span>
+                        </li>
+                        <li class="mb-3 d-flex align-items-start">
+                            <i class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                            <span><strong>Automação Industrial & PLCs:</strong> Programação em Ladder e Structured Text (ST) usando CODESYS e EcoStruxure.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-5">
+                    <div class="p-4 bg-light rounded shadow-sm border">
+                        <h5 class="fw-bold mb-3 text-secondary"><i class="bi bi-activity me-2"></i>Softwares & Ambientes</h5>
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="badge bg-white text-dark border px-3 py-2">MATLAB / Simulink</span>
+                            <span class="badge bg-white text-dark border px-3 py-2">OpenModelica</span>
+                            <span class="badge bg-white text-dark border px-3 py-2">PSIM</span>
+                            <span class="badge bg-white text-dark border px-3 py-2">CODESYS</span>
+                            <span class="badge bg-white text-dark border px-3 py-2">EcoStruxure</span>
+                            <span class="badge bg-white text-dark border px-3 py-2">Ladder / ST</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Seção de Projetos & Pesquisa -->
+    <section id="projects" class="bg-light py-5">
+        <div class="container-lg">
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-8 text-center">
+                    <h2 class="fw-bold display-6">Projetos & Pesquisas em Destaque</h2>
+                    <p class="text-muted lead">Projetos práticos onde apliquei essa infraestrutura de software e hardware.</p>
                 </div>
             </div>
 
             <div class="row justify-content-center align-items-center g-5">
                 <div class="col-lg-6">
-                    <h3 class="fw-bold mb-3">Enxames de Drones Autônomos & Simulação SITL</h3>
+                    <h3 class="fw-bold mb-3">Enxames de Drones Autônomos (LASC / UFSC)</h3>
                     <p class="text-muted mb-4">Desenvolvimento de arquiteturas descentralizadas de formação líder-seguidor utilizando PX4 Autopilot, ROS 2 (`px4_ros_com`) e Gazebo SITL para validação em ambiente simulado e real.</p>
                     
                     <ul class="list-unstyled">
                         <li class="mb-3 d-flex align-items-start">
-                            <i class="bi bi-cpu-fill text-primary me-2 fs-5"></i>
-                            <span><strong>Sistemas Embarcados:</strong> Integração micro-ROS em ESP32 com IMU (MPU6050) e controladores Kakute H7 / STM32.</span>
+                            <i class="bi bi-check2-square text-primary me-2 fs-5"></i>
+                            <span><strong>Sistema Cyber-Físico:</strong> Rover e drones integrando micro-ROS via Wi-Fi AP em ESP32 com MPU6050.</span>
                         </li>
                         <li class="mb-3 d-flex align-items-start">
-                            <i class="bi bi-diagram-3-fill text-primary me-2 fs-5"></i>
-                            <span><strong>Controle & Visão:</strong> Kinematics, observadores de estado, loops de controle fechado e visão computacional com OpenCV.</span>
-                        </li>
-                        <li class="mb-3 d-flex align-items-start">
-                            <i class="bi bi-gear-wide-connected text-primary me-2 fs-5"></i>
-                            <span><strong>Automação & Lógica:</strong> Programação de PLCs (Ladder/ST em CODESYS/EcoStruxure) e modelagem de sistemas no PSIM e OpenModelica.</span>
+                            <i class="bi bi-check2-square text-primary me-2 fs-5"></i>
+                            <span><strong>Draconis Eletrônica:</strong> Gestão de equipe e desenvolvimento de subsistemas de energia e sinal para competição SAE.</span>
                         </li>
                     </ul>
                 </div>
@@ -159,6 +302,7 @@
                 <p class="mb-2 mb-sm-0 text-muted">© 2026 Marcos Oliveira. Engenharia Mecatrônica UFSC.</p>
                 <ul class="nav">
                     <li class="nav-item"><a href="#intro" class="nav-link px-2 text-muted">Início</a></li>
+                    <li class="nav-item"><a href="#skills" class="nav-link px-2 text-muted">Competências</a></li>
                     <li class="nav-item"><a href="#projects" class="nav-link px-2 text-muted">Projetos</a></li>
                     <li class="nav-item"><a href="https://github.com" target="_blank" class="nav-link px-2 text-muted">GitHub</a></li>
                     <li class="nav-item"><a href="https://linkedin.com" target="_blank" class="nav-link px-2 text-muted">LinkedIn</a></li>

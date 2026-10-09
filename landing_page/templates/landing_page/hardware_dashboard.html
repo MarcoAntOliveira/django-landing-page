@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marcos Oliveira - Mechatronics & Foxglove Telemetry Explorer</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            bg: '#050811',
+                            card: 'rgba(11, 17, 32, 0.82)',
+                            accent: '#00f2fe',
+                            emerald: '#10b981',
+                            purple: '#a855f7',
+                            amber: '#f59e0b',
+                            rose: '#f43f5e'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts & Bootstrap Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <!-- Three.js & Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            background-color: #050811;
+            color: #f1f5f9;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .glass-panel {
+            background: rgba(11, 17, 32, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+        }
+
+        .glass-panel-glow {
+            border: 1px solid rgba(0, 242, 254, 0.35);
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.15);
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(5, 8, 17, 0.9);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(56, 189, 248, 0.3);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 242, 254, 0.6);
+        }
+
+        .code-block {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            line-height: 1.5;
+        }
+
+        .pulse-beacon {
+            box-shadow: 0 0 0 0 rgba(0, 242, 254, 0.7);
+            animation: pulse-ring 1.8s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(0, 242, 254, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 242, 254, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 242, 254, 0); }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col selection:bg-cyan-500 selection:text-slate-950">
+
+    <!-- Navbar Header -->
+    <header class="sticky top-0 z-50 w-full glass-panel border-b border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-blue-600 to-purple-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                    <i class="bi bi-radar text-xl text-white"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-base tracking-wide text-white flex items-center gap-2">
+                        Marcos Oliveira
+                        <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">FOXGLOVE TELEMETRY</span>
+                    </h1>
+                    <p class="text-xs text-cyan-400 font-mono flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        SLAM Point Cloud & Hardware Bench Explorer
+                    </p>
+                </div>
+            </div>
+
+            <!-- Quick Telemetry Badges -->
+            <div class="hidden lg:flex items-center gap-4 text-xs font-mono">
+                <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/90 border border-slate-800">
+                    <span class="text-slate-400">ROS2 Topic:</span>
+                    <span class="text-cyan-400 font-semibold">/pointcloud2_slam</span>
+                </div>
+                <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/90 border border-slate-800">
+                    <span class="text-slate-400">LiDAR Rate:</span>
+                    <span class="text-emerald-400 font-semibold">15 Hz (2,400 pts/s)</span>
+                </div>
+                <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/90 border border-slate-800">
+                    <span class="text-slate-400">Wi-Fi AP:</span>
+                    <span class="text-amber-400 font-semibold">ESP32_uROS_102</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <a href="#workbench-section" class="text-xs font-medium px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 transition border border-slate-700 flex items-center gap-1.5">
+                    <i class="bi bi-cpu text-cyan-400"></i>
+                    <span class="hidden sm:inline">Hardware Inspector</span>
+                </a>
+                <button onclick="triggerLaserScanPulse()" class="text-xs font-medium px-3.5 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-bold hover:brightness-110 transition shadow-lg shadow-cyan-500/20 flex items-center gap-1.5">
+                    <i class="bi bi-broadcast"></i>
+                    <span>Trigger LiDAR Sweep</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+
+        <!-- SECTION 1: Point Cloud SLAM & Telemetry Dashboard -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+            <!-- 3D Point Cloud Canvas (Col 8) -->
+            <div class="lg:col-span-8 flex flex-col glass-panel rounded-2xl overflow-hidden border border-slate-800 relative">
+                
+                <div class="absolute top-0 left-0 right-0 z-10 p-4 flex items-center justify-between bg-gradient-to-b from-slate-950/90 via-slate-950/40 to-transparent pointer-events-none">
+                    <div class="flex items-center gap-2 pointer-events-auto">
+                        <span class="px-2.5 py-1 rounded-lg bg-cyan-500/20 text-cyan-300 text-xs font-mono font-semibold border border-cyan-500/30 flex items-center gap-1.5">
+                            <i class="bi bi-eye-fill text-cyan-400"></i> FOXGLOVE 3D SLAM MAP
+                        </span>
+                        <span id="pointCountBadge" class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 text-xs font-mono font-semibold border border-emerald-500/30">
+                            POINTS: 2,450
+                        </span>
+                    </div>
+
+                    <div class="flex items-center gap-2 pointer-events-auto font-mono text-xs">
+                        <button onclick="togglePointCloudRotation()" id="btn-rotate" class="px-3 py-1.5 rounded-lg bg-slate-900/80 hover:bg-slate-800 text-slate-300 border border-slate-700 transition flex items-center gap-1">
+                            <i class="bi bi-arrow-repeat"></i> Auto-Rotate
+                        </button>
+                        <button onclick="resetPointCloudCamera()" class="px-3 py-1.5 rounded-lg bg-slate-900/80 hover:bg-slate-800 text-slate-300 border border-slate-700 transition flex items-center gap-1">
+                            <i class="bi bi-camera"></i> Reset View
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 3D Canvas -->
+                <div id="pointcloud-container" class="w-full h-[460px] relative bg-slate-950 cursor-grab active:cursor-grabbing">
+                    <div id="canvas-loader" class="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-slate-950 text-slate-400">
+                        <div class="w-10 h-10 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin"></div>
+                        <p class="text-xs font-mono">Initializing WebGL Point Cloud Radar Renderer...</p>
+                    </div>
+                </div>
+
+                <!-- Canvas Control Bar -->
+                <div class="p-4 bg-slate-900/90 border-t border-slate-800 flex flex-wrap items-center justify-between gap-4 font-mono text-xs">
+                    <div class="flex items-center gap-3">
+                        <span class="text-slate-400">Grid Overlay:</span>
+                        <button onclick="toggleGridOccupancy()" id="btn-grid" class="px-3 py-1 rounded-lg bg-cyan-500 text-slate-950 font-bold transition">Occupancy Grid: ON</button>
+                    </div>
+
+                    <div class="flex items-center gap-4 text-slate-300">
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span>
+                            <span>Drone Trajectory</span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                            <span>Occupied Obstacles</span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-purple-400"></span>
+                            <span>SLAM Landmarks</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Chart Telemetry Sidebar (Col 4) -->
+            <div class="lg:col-span-4 flex flex-col space-y-4">
+                
+                <!-- MPU6050 Gyro / Accel Live Chart -->
+                <div class="glass-panel rounded-2xl p-4 border border-slate-800 space-y-3">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                        <h2 class="font-semibold text-xs tracking-wide text-slate-100 flex items-center gap-2">
+                            <i class="bi bi-activity text-cyan-400"></i>
+                            MPU6050 IMU Angular Velocity (rad/s)
+                        </h2>
+                        <span class="text-[10px] font-mono text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20">/imu/data_raw</span>
+                    </div>
+                    <div class="h-32 w-full">
+                        <canvas id="imuChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Battery Voltage & Ping Chart -->
+                <div class="glass-panel rounded-2xl p-4 border border-slate-800 space-y-3">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                        <h2 class="font-semibold text-xs tracking-wide text-slate-100 flex items-center gap-2">
+                            <i class="bi bi-lightning-charge-fill text-amber-400"></i>
+                            Battery (4S LiPo) & Wi-Fi AP Ping
+                        </h2>
+                        <span class="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">4S 15.8V OK</span>
+                    </div>
+                    <div class="h-32 w-full">
+                        <canvas id="powerChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Telemetry Status Brief -->
+                <div class="glass-panel rounded-2xl p-4 border border-slate-800 font-mono text-xs space-y-2">
+                    <div class="flex justify-between text-slate-400">
+                        <span>micro-ROS Transport:</span>
+                        <span class="text-cyan-400">UDP / Wi-Fi AP</span>
+                    </div>
+                    <div class="flex justify-between text-slate-400">
+                        <span>Kakute H7 Telemetry:</span>
+                        <span class="text-emerald-400">MAVLink 2.0 (921600 baud)</span>
+                    </div>
+                    <div class="flex justify-between text-slate-400">
+                        <span>EKF3 Pose Estimation:</span>
+                        <span class="text-emerald-400">CONVERGED (0.02m var)</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 2: Hardware Circuit Bench Inspector & Pinout Diagram -->
+        <section id="workbench-section" class="space-y-6 pt-4">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-2 border-b border-slate-800 pb-4">
+                <div>
+                    <h2 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                        <i class="bi bi-motherboard text-cyan-400"></i>
+                        Mechatronics Hardware Bench & Pinout Inspector
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-1">Interactive schematic workbench. Click components or test pins on the PCB layout to inspect signal pinouts and real-time logic analyzer traces.</p>
+                </div>
+                <div class="flex items-center gap-2 text-xs font-mono text-cyan-400">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                    Interactive Bench Active
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+                <!-- Interactive SVG Circuit Bench Diagram (Col 7) -->
+                <div class="lg:col-span-7 glass-panel p-6 rounded-2xl border border-slate-800 flex flex-col justify-between space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                        <span class="text-xs font-mono text-slate-300 flex items-center gap-2">
+                            <i class="bi bi-diagram-2 text-cyan-400"></i> KiCad Modular PCB Bench Topology
+                        </span>
+                        <span class="text-[10px] font-mono text-slate-500">Rev 3.2 - Dual MCU Architecture</span>
+                    </div>
+
+                    <!-- SVG Hardware Circuit Board Bench -->
+                    <div class="w-full flex justify-center py-2">
+                        <svg viewBox="0 0 600 380" class="w-full max-w-xl h-auto drop-shadow-2xl">
+                            <!-- PCB Board Base -->
+                            <rect x="20" y="20" width="560" height="340" rx="16" fill="#091322" stroke="#1e293b" stroke-width="3"/>
+                            <path d="M 30 30 L 570 30 M 30 350 L 570 350" stroke="#00f2fe" stroke-width="1" opacity="0.15" stroke-dasharray="4,4"/>
+
+                            <!-- Ground Planes & Copper Traces -->
+                            <path d="M 170 120 L 250 120 L 250 200 L 330 200" fill="none" stroke="#00f2fe" stroke-width="2" opacity="0.6"/>
+                            <path d="M 170 160 L 220 160 L 220 280 L 330 280" fill="none" stroke="#10b981" stroke-width="2" opacity="0.6"/>
+                            <path d="M 450 120 L 370 120 L 370 200" fill="none" stroke="#f59e0b" stroke-width="2" opacity="0.6"/>
+
+                            <!-- Module 1: Kakute H7 FC -->
+                            <g onclick="selectHardwareComponent('kakute')" class="cursor-pointer group">
+                                <rect x="50" y="60" width="120" height="120" rx="10" fill="#0f172a" stroke="#00f2fe" stroke-width="2" class="group-hover:stroke-cyan-300 transition"/>
+                                <rect x="70" y="80" width="80" height="80" rx="6" fill="#1e293b"/>
+                                <text x="110" y="115" font-family="JetBrains Mono" font-size="11" fill="#00f2fe" font-weight="bold" text-anchor="middle">STM32H7</text>
+                                <text x="110" y="132" font-family="JetBrains Mono" font-size="9" fill="#94a3b8" text-anchor="middle">Kakute H7</text>
+                                <!-- Test Pin Dots -->
+                                <circle cx="50" cy="80" r="4" fill="#00f2fe" class="pulse-beacon"/>
+                                <circle cx="50" cy="110" r="4" fill="#00f2fe"/>
+                                <circle cx="50" cy="140" r="4" fill="#00f2fe"/>
+                            </g>
+
+                            <!-- Module 2: ESP32 micro-ROS -->
+                            <g onclick="selectHardwareComponent('esp32')" class="cursor-pointer group">
+                                <rect x="50" y="220" width="120" height="110" rx="10" fill="#0f172a" stroke="#10b981" stroke-width="2" class="group-hover:stroke-emerald-300 transition"/>
+                                <rect x="70" y="235" width="80" height="60" rx="4" fill="#1e293b"/>
+                                <text x="110" y="262" font-family="JetBrains Mono" font-size="11" fill="#10b981" font-weight="bold" text-anchor="middle">ESP32-WROOM</text>
+                                <text x="110" y="278" font-family="JetBrains Mono" font-size="9" fill="#94a3b8" text-anchor="middle">micro-ROS AP</text>
+                                <circle cx="50" cy="250" r="4" fill="#10b981" class="pulse-beacon"/>
+                                <circle cx="50" cy="280" r="4" fill="#10b981"/>
+                            </g>
+
+                            <!-- Module 3: MPU6050 IMU + ExpressLRS -->
+                            <g onclick="selectHardwareComponent('elrs')" class="cursor-pointer group">
+                                <rect x="330" y="60" width="120" height="100" rx="10" fill="#0f172a" stroke="#f59e0b" stroke-width="2" class="group-hover:stroke-amber-300 transition"/>
+                                <text x="390" y="105" font-family="JetBrains Mono" font-size="11" fill="#f59e0b" font-weight="bold" text-anchor="middle">ExpressLRS 2.4G</text>
+                                <text x="390" y="122" font-family="JetBrains Mono" font-size="9" fill="#94a3b8" text-anchor="middle">CRSF Protocol</text>
+                                <circle cx="450" cy="100" r="4" fill="#f59e0b" class="pulse-beacon"/>
+                            </g>
+
+                            <!-- Module 4: Power Management / BEC -->
+                            <g onclick="selectHardwareComponent('power')" class="cursor-pointer group">
+                                <rect x="330" y="200" width="120" height="130" rx="10" fill="#0f172a" stroke="#a855f7" stroke-width="2" class="group-hover:stroke-purple-300 transition"/>
+                                <text x="390" y="255" font-family="JetBrains Mono" font-size="11" fill="#a855f7" font-weight="bold" text-anchor="middle">4S Power / BEC</text>
+                                <text x="390" y="272" font-family="JetBrains Mono" font-size="9" fill="#94a3b8" text-anchor="middle">5V 3A Regulated</text>
+                                <circle cx="450" cy="240" r="4" fill="#a855f7" class="pulse-beacon"/>
+                            </g>
+
+                            <!-- Labels & Help -->
+                            <text x="300" y="355" font-family="JetBrains Mono" font-size="10" fill="#64748b" text-anchor="middle">Click any module or test point to inspect signals</text>
+                        </svg>
+                    </div>
+
+                    <div class="flex items-center justify-between text-xs font-mono text-slate-400 pt-2 border-t border-slate-800">
+                        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span> Kakute H7 UART2</span>
+                        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span> ESP32 micro-ROS</span>
+                        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span> ELRS Receiver</span>
+                        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-purple-400"></span> 5V/12V Regulators</span>
+                    </div>
+                </div>
+
+                <!-- Hardware Component Pinout Details & Signal Traces (Col 5) -->
+                <div class="lg:col-span-5 glass-panel p-6 rounded-2xl border border-slate-800 flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+                            <div class="flex items-center gap-2">
+                                <span id="compIcon" class="p-2 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-lg">
+                                    <i class="bi bi-cpu"></i>
+                                </span>
+                                <div>
+                                    <h3 id="compTitle" class="font-bold text-sm text-white">Kakute H7 Flight Controller</h3>
+                                    <p id="compSub" class="text-[11px] font-mono text-cyan-400">STM32H743VIT6 - 480MHz</p>
+                                </div>
+                            </div>
+                            <span id="compVoltage" class="text-xs font-mono px-2.5 py-1 rounded bg-slate-800 text-emerald-400 border border-slate-700">3.3V / 5.0V Logic</span>
+                        </div>
+
+                        <!-- Description & Pinout Matrix -->
+                        <div class="space-y-4 font-mono text-xs">
+                            <p id="compDesc" class="text-slate-300 font-sans text-xs leading-relaxed">
+                                Primary autopilot processor running PX4. Transmits uORB telemetry over High-Speed UART2 to the ESP32 micro-ROS agent.
+                            </p>
+
+                            <div class="space-y-2">
+                                <span class="text-slate-400 text-[11px] uppercase tracking-wider">Active Signal Pinout Matrix</span>
+                                <div id="compPins" class="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1.5 text-[11px]">
+                                    <div class="flex justify-between text-cyan-300"><span>TX2 / RX2:</span><span>UART2 micro-ROS Bridge (921600 baud)</span></div>
+                                    <div class="flex justify-between text-slate-300"><span>I2C1 SDA/SCL:</span><span>MPU6050 & External Compass</span></div>
+                                    <div class="flex justify-between text-emerald-300"><span>M1-M4 PWM:</span><span>DShot600 Motor ESC Outputs</span></div>
+                                </div>
+                            </div>
+
+                            <!-- Live Logic Analyzer Signal Trace Canvas -->
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center text-[11px]">
+                                    <span class="text-slate-400 uppercase tracking-wider">Logic Analyzer Trace (UART / I2C)</span>
+                                    <span class="text-emerald-400 font-bold">10 MHz Sample</span>
+                                </div>
+                                <div class="h-20 w-full rounded-xl bg-slate-950 border border-slate-800 overflow-hidden p-1">
+                                    <canvas id="logicAnalyzerCanvas" class="w-full h-full"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-3 border-t border-slate-800 flex justify-between items-center text-xs font-mono text-slate-400">
+                        <span>Status: Fully Operational</span>
+                        <span class="text-cyan-400">Temp: 38.4°C</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 3: Code & Configuration Workbench -->
+        <section class="space-y-4 pt-4">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-2 border-b border-slate-800 pb-4">
+                <div>
+                    <h2 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                        <i class="bi bi-code-square text-cyan-400"></i>
+                        ROS 2 Firmware & Configuration Workbench
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-1">Explore Marcos Oliveira's embedded ROS 2 launch files, micro-ROS firmware C++ code, and Foxglove layout configurations.</p>
+                </div>
+
+                <!-- Tabs -->
+                <div class="flex items-center gap-2 font-mono text-xs">
+                    <button onclick="switchWorkbenchTab('launch')" id="tab-btn-launch" class="tab-btn px-3 py-1.5 rounded-lg bg-cyan-500 text-slate-950 font-bold transition">ROS2 Launch</button>
+                    <button onclick="switchWorkbenchTab('firmware')" id="tab-btn-firmware" class="tab-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition">ESP32 Firmware</button>
+                    <button onclick="switchWorkbenchTab('foxglove')" id="tab-btn-foxglove" class="tab-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Foxglove JSON</button>
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-2xl p-4 sm:p-6 border border-slate-800">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4 font-mono text-xs">
+                    <span id="tabFilename" class="text-cyan-400 flex items-center gap-2">
+                        <i class="bi bi-file-earmark-code"></i> swarm_telemetry_launch.py
+                    </span>
+                    <span class="text-slate-500">ROS 2 Humble / PlatformIO Compatible</span>
+                </div>
+
+                <pre class="p-4 rounded-xl bg-slate-950 border border-slate-800 overflow-x-auto text-slate-200 code-block"><code id="workbenchCode"></code></pre>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-auto border-t border-slate-800/80 bg-slate-950/90 py-6 text-xs text-slate-500 font-mono">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p>© 2026 Marcos Oliveira. Mechatronics Engineering - UFSC.</p>
+            <div class="flex items-center gap-4">
+                <span class="flex items-center gap-1.5 text-slate-400">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Foxglove Bridge Active
+                </span>
+                <a href="https://github.com" target="_blank" class="hover:text-slate-300 transition flex items-center gap-1"><i class="bi bi-github"></i> GitHub</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Global State
+        let pcScene, pcCamera, pcRenderer, pcControls, pointCloudMesh, trajectoryLine;
+        let isRotating = true;
+        let showOccupancyGrid = true;
+        let imuChart, powerChart;
+        let logicCanvas, logicCtx;
+        let logicPhase = 0;
+
+        // 3D Point Cloud Visualizer Initialization
+        function initPointCloud3D() {
+            const container = document.getElementById('pointcloud-container');
+            if (!container) return;
+
+            pcScene = new THREE.Scene();
+            pcScene.background = new THREE.Color(0x050811);
+            pcScene.fog = new THREE.FogExp2(0x050811, 0.03);
+
+            pcCamera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 100);
+            pcCamera.position.set(0, 10, 14);
+
+            pcRenderer = new THREE.WebGLRenderer({ antialias: true });
+            pcRenderer.setSize(container.clientWidth, container.clientHeight);
+            pcRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            const loader = document.getElementById('canvas-loader');
+            if (loader) loader.style.display = 'none';
+            container.appendChild(pcRenderer.domElement);
+
+            pcControls = new THREE.OrbitControls(pcCamera, pcRenderer.domElement);
+            pcControls.enableDamping = true;
+            pcControls.dampingFactor = 0.05;
+
+            // Ambient & Point Lights
+            pcScene.add(new THREE.AmbientLight(0x1e293b, 2));
+
+            // Grid
+            const gridHelper = new THREE.GridHelper(30, 30, 0x00f2fe, 0x1e293b);
+            gridHelper.name = "occupancyGrid";
+            pcScene.add(gridHelper);
+
+            // Generate Point Cloud SLAM Points
+            buildPointCloud();
+
+            // Drone Trajectory Line
+            buildTrajectoryLine();
+
+            window.addEventListener('resize', onPointCloudResize);
+            animatePointCloud();
+        }
+
+        function buildPointCloud() {
+            const pointCount = 2450;
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(pointCount * 3);
+            const colors = new Float32Array(pointCount * 3);
+
+            const colorCyan = new THREE.Color(0x00f2fe);
+            const colorEmerald = new THREE.Color(0x10b981);
+            const colorPurple = new THREE.Color(0xa855f7);
+
+            for (let i = 0; i < pointCount; i++) {
+                // Generate obstacle boundaries and room walls simulation
+                let x, y, z;
+                const radius = 5 + Math.random() * 6;
+                const angle = Math.random() * Math.PI * 2;
+
+                if (i < 1200) { // Outer room perimeter
+                    x = Math.cos(angle) * radius;
+                    z = Math.sin(angle) * radius;
+                    y = (Math.random() - 0.2) * 2.5;
+                } else if (i < 2000) { // Center obstacle cluster
+                    x = (Math.random() - 0.5) * 6;
+                    z = (Math.random() - 0.5) * 6;
+                    y = Math.random() * 2;
+                } else { // High elevation SLAM ceiling points
+                    x = (Math.random() - 0.5) * 14;
+                    z = (Math.random() - 0.5) * 14;
+                    y = 2.5 + Math.random() * 1.5;
+                }
+
+                positions[i * 3] = x;
+                positions[i * 3 + 1] = y;
+                positions[i * 3 + 2] = z;
+
+                let c = (y > 2.0) ? colorPurple : ((i < 1200) ? colorCyan : colorEmerald);
+                colors[i * 3] = c.r;
+                colors[i * 3 + 1] = c.g;
+                colors[i * 3 + 2] = c.b;
+            }
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+            const material = new THREE.PointsMaterial({
+                size: 0.12,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.85
+            });
+
+            pointCloudMesh = new THREE.Points(geometry, material);
+            pcScene.add(pointCloudMesh);
+        }
+
+        function buildTrajectoryLine() {
+            const points = [];
+            for (let i = 0; i <= 50; i++) {
+                const t = (i / 50) * Math.PI * 2;
+                points.push(new THREE.Vector3(
+                    Math.sin(t) * 4,
+                    1.2 + Math.sin(t * 2) * 0.4,
+                    Math.cos(t) * 4
+                ));
+            }
+
+            const geometry = new THREE.BufferGeometry().setFromPoints(points);
+            const material = new THREE.LineBasicMaterial({ color: 0x00f2fe, linewidth: 2 });
+            trajectoryLine = new THREE.Line(geometry, material);
+            pcScene.add(trajectoryLine);
+        }
+
+        function animatePointCloud() {
+            requestAnimationFrame(animatePointCloud);
+
+            if (isRotating && pointCloudMesh) {
+                pointCloudMesh.rotation.y += 0.002;
+                if (trajectoryLine) trajectoryLine.rotation.y += 0.002;
+            }
+
+            pcControls.update();
+            pcRenderer.render(pcScene, pcCamera);
+        }
+
+        function onPointCloudResize() {
+            const container = document.getElementById('pointcloud-container');
+            if (!container || !pcRenderer || !pcCamera) return;
+
+            pcCamera.aspect = container.clientWidth / container.clientHeight;
+            pcCamera.updateProjectionMatrix();
+            pcRenderer.setSize(container.clientWidth, container.clientHeight);
+        }
+
+        function togglePointCloudRotation() {
+            isRotating = !isRotating;
+            document.getElementById('btn-rotate').classList.toggle('text-cyan-400');
+        }
+
+        function resetPointCloudCamera() {
+            pcCamera.position.set(0, 10, 14);
+            pcControls.target.set(0, 0, 0);
+        }
+
+        function toggleGridOccupancy() {
+            showOccupancyGrid = !showOccupancyGrid;
+            const grid = pcScene.getObjectByName("occupancyGrid");
+            if (grid) grid.visible = showOccupancyGrid;
+            document.getElementById('btn-grid').innerText = `Occupancy Grid: ${showOccupancyGrid ? 'ON' : 'OFF'}`;
+        }
+
+        function triggerLaserScanPulse() {
+            if (!pointCloudMesh) return;
+            const positions = pointCloudMesh.geometry.attributes.position.array;
+
+            for (let i = 0; i < positions.length; i += 3) {
+                positions[i] += (Math.random() - 0.5) * 0.15;
+                positions[i + 2] += (Math.random() - 0.5) * 0.15;
+            }
+            pointCloudMesh.geometry.attributes.position.needsUpdate = true;
+        }
+
+        // Initialize Live Telemetry Charts (Chart.js)
+        function initCharts() {
+            const ctxImu = document.getElementById('imuChart').getContext('2d');
+            imuChart = new Chart(ctxImu, {
+                type: 'line',
+                data: {
+                    labels: Array(20).fill(''),
+                    datasets: [
+                        { label: 'Gyro X', data: Array(20).fill(0), borderColor: '#00f2fe', borderWidth: 1.5, pointRadius: 0 },
+                        { label: 'Gyro Y', data: Array(20).fill(0), borderColor: '#10b981', borderWidth: 1.5, pointRadius: 0 }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: false,
+                    scales: {
+                        x: { display: false },
+                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#64748b', font: { size: 9 } } }
+                    },
+                    plugins: { legend: { labels: { color: '#94a3b8', font: { size: 10 } } } }
+                }
+            });
+
+            const ctxPower = document.getElementById('powerChart').getContext('2d');
+            powerChart = new Chart(ctxPower, {
+                type: 'line',
+                data: {
+                    labels: Array(20).fill(''),
+                    datasets: [
+                        { label: 'Voltage (V)', data: Array(20).fill(15.8), borderColor: '#f59e0b', borderWidth: 1.5, pointRadius: 0 },
+                        { label: 'Ping (ms)', data: Array(20).fill(4), borderColor: '#a855f7', borderWidth: 1.5, pointRadius: 0 }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: false,
+                    scales: {
+                        x: { display: false },
+                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#64748b', font: { size: 9 } } }
+                    },
+                    plugins: { legend: { labels: { color: '#94a3b8', font: { size: 10 } } } }
+                }
+            });
+
+            setInterval(updateChartsData, 200);
+        }
+
+        function updateChartsData() {
+            if (!imuChart || !powerChart) return;
+
+            // Gyro update
+            const newGyroX = (Math.random() - 0.5) * 1.2;
+            const newGyroY = (Math.random() - 0.5) * 0.8;
+            imuChart.data.datasets[0].data.shift();
+            imuChart.data.datasets[0].data.push(newGyroX);
+            imuChart.data.datasets[1].data.shift();
+            imuChart.data.datasets[1].data.push(newGyroY);
+            imuChart.update();
+
+            // Power & Ping update
+            const newVolt = 15.7 + Math.random() * 0.2;
+            const newPing = 3 + Math.floor(Math.random() * 4);
+            powerChart.data.datasets[0].data.shift();
+            powerChart.data.datasets[0].data.push(newVolt);
+            powerChart.data.datasets[1].data.shift();
+            powerChart.data.datasets[1].data.push(newPing);
+            powerChart.update();
+        }
+
+        // Logic Analyzer Canvas Animation
+        function initLogicAnalyzer() {
+            logicCanvas = document.getElementById('logicAnalyzerCanvas');
+            if (!logicCanvas) return;
+            logicCtx = logicCanvas.getContext('2d');
+
+            function drawTrace() {
+                if (!logicCanvas || !logicCtx) return;
+
+                logicCtx.clearRect(0, 0, logicCanvas.width, logicCanvas.height);
+                logicCtx.strokeStyle = '#00f2fe';
+                logicCtx.lineWidth = 1.5;
+
+                logicCtx.beginPath();
+                let x = 0;
+                logicPhase += 2;
+
+                while (x < logicCanvas.width) {
+                    let high = ((x + logicPhase) % 30) > 15;
+                    let y = high ? 10 : logicCanvas.height - 10;
+                    if (x === 0) logicCtx.moveTo(x, y);
+                    else logicCtx.lineTo(x, y);
+                    x += 10;
+                }
+                logicCtx.stroke();
+                requestAnimationFrame(drawTrace);
+            }
+
+            drawTrace();
+        }
+
+        // Hardware Component Inspector Selection
+        const hardwareData = {
+            kakute: {
+                title: "Kakute H7 Flight Controller",
+                sub: "STM32H743VIT6 - 480MHz Dual Precision FPU",
+                voltage: "3.3V / 5.0V Logic",
+                desc: "Primary autopilot unit running PX4 Autopilot. Handles sensor fusion (EKF3), MAVLink communication, and outputs DShot motor commands.",
+                pins: [
+                    { name: "TX2 / RX2:", val: "UART2 micro-ROS Bridge (921600 baud)" },
+                    { name: "I2C1 SDA/SCL:", val: "MPU6050 & External Compass Baro" },
+                    { name: "M1-M4 PWM:", val: "DShot600 Quadcopter ESC Motors" }
+                ]
+            },
+            esp32: {
+                title: "ESP32 micro-ROS Wireless Agent",
+                sub: "Xtensa Dual-Core 240MHz - 802.11 b/g/n Wi-Fi",
+                voltage: "3.3V Logic Level",
+                desc: "Standalone Wi-Fi communication bridge sending raw sensor data directly into the ROS 2 DDS network over UDP sockets.",
+                pins: [
+                    { name: "GPIO 21/22:", val: "I2C Master Bus MPU6050 Sync" },
+                    { name: "GPIO 16/17:", val: "UART2 Hardware Serial to Kakute H7" },
+                    { name: "Wi-Fi AP:", val: "SSID: ESP32_uROS_102 (UDP: 8888)" }
+                ]
+            },
+            elrs: {
+                title: "ExpressLRS 2.4GHz Telemetry RX",
+                sub: "SX1280 LoRa - 500Hz Packet Rate",
+                voltage: "5.0V Input",
+                desc: "Long-range remote control link using CRSF serial protocol for ultra-low latency manual override and flight mode switching.",
+                pins: [
+                    { name: "TX / RX:", val: "UART1 CRSF Protocol (420000 baud)" },
+                    { name: "Antenna:", val: "2.4GHz Dipole (100mW Telemetry)" }
+                ]
+            },
+            power: {
+                title: "4S LiPo Power Module & 5V BEC",
+                sub: "Invensense Switching Regulator 5V/3A",
+                voltage: "14.8V - 16.8V Input",
+                desc: "Power distribution board providing regulated clean power to flight controller logic, sensors, and micro-ROS hardware.",
+                pins: [
+                    { name: "VCC / GND:", val: "Direct 4S LiPo Battery Rail" },
+                    { name: "5V Out:", val: "Clean Regulated Logic Power Rail" }
+                ]
+            }
+        };
+
+        function selectHardwareComponent(key) {
+            const data = hardwareData[key];
+            if (!data) return;
+
+            document.getElementById('compTitle').innerText = data.title;
+            document.getElementById('compSub').innerText = data.sub;
+            document.getElementById('compVoltage').innerText = data.voltage;
+            document.getElementById('compDesc').innerText = data.desc;
+
+            const pinsContainer = document.getElementById('compPins');
+            pinsContainer.innerHTML = data.pins.map(p => 
+                `<div class="flex justify-between text-cyan-300"><span>${p.name}</span><span>${p.val}</span></div>`
+            ).join('');
+        }
+
+        // Workbench Tabs Logic
+        const codeSnippets = {
+            launch: `# ROS 2 Humble Swarm & Foxglove Telemetry Launch
+import os
+from launch import LaunchDescription
+from launch_ros.actions import Node
+
+def generate_launch_description():
+    return LaunchDescription([
+        # micro-ROS Agent Node
+        Node(
+            package='micro_ros_agent',
+            executable='micro_ros_agent',
+            name='microros_agent',
+            arguments=['udp4', '--port', '8888']
+        ),
+        # Foxglove Studio Bridge Node
+        Node(
+            package='foxglove_bridge',
+            executable='foxglove_bridge_node',
+            name='foxglove_bridge',
+            parameters=[{'port': 8765, 'send_buffer_limit': 10000000}]
+        )
+    ])`,
+            firmware: `// ESP32 micro-ROS Firmware (PlatformIO)
+#include <Arduino.h>
+#include <micro_ros_platformio.h>
+#include <rcl/rcl.h>
+#include <sensor_msgs/msg/imu.h>
+
+rcl_publisher_t publisher;
+sensor_msgs__msg__Imu imu_msg;
+
+void setup() {
+    Serial.begin(115200);
+    set_microros_wifi_transports("ESP32_uROS_102", "mecatronics2026", "192.168.4.1", 8888);
+    
+    rclc_support_t support;
+    rclc_support_init(&support, 0, NULL, &allocator);
+    rclc_node_init_default(&node, "esp32_telemetry_node", "", &support);
+    rclc_publisher_init_default(&publisher, &node,
+        ROSIDL_GET_MSG_TYPE_SUPPORT(sensor_msgs, msg, Imu), "/imu/data_raw");
+}
+
+void loop() {
+    imu_msg.angular_velocity.x = readGyroX();
+    rcl_publish(&publisher, &imu_msg, NULL);
+    delay(10);
+}`,
+            foxglove: `{
+  "configVersion": 1,
+  "panels": {
+    "3d!1": {
+      "type": "3D",
+      "cameraState": { "distance": 14, "phi": 60, "theta": 45 },
+      "topics": {
+        "/pointcloud2_slam": { "visible": true, "colorField": "intensity" },
+        "/fmu/out/vehicle_trajectory": { "visible": true, "color": "#00f2fe" }
+      }
+    }
+  }
+}`
+        };
+
+        function switchWorkbenchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-cyan-500', 'text-slate-950', 'font-bold');
+                btn.classList.add('bg-slate-800', 'text-slate-300');
+            });
+
+            const activeBtn = document.getElementById(`tab-btn-${tab}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-slate-800', 'text-slate-300');
+                activeBtn.classList.add('bg-cyan-500', 'text-slate-950', 'font-bold');
+            }
+
+            const codeContainer = document.getElementById('workbenchCode');
+            const fileLabel = document.getElementById('tabFilename');
+
+            if (tab === 'launch') {
+                codeContainer.innerText = codeSnippets.launch;
+                fileLabel.innerHTML = `<i class="bi bi-file-earmark-code"></i> swarm_telemetry_launch.py`;
+            } else if (tab === 'firmware') {
+                codeContainer.innerText = codeSnippets.firmware;
+                fileLabel.innerHTML = `<i class="bi bi-file-earmark-code"></i> esp32_microros_main.cpp`;
+            } else {
+                codeContainer.innerText = codeSnippets.foxglove;
+                fileLabel.innerHTML = `<i class="bi bi-file-earmark-code"></i> foxglove_layout.json`;
+            }
+        }
+
+        // On Page Load
+        document.addEventListener('DOMContentLoaded', () => {
+            initPointCloud3D();
+            initCharts();
+            initLogicAnalyzer();
+            switchWorkbenchTab('launch');
+        });
+    </script>
+</body>
+</html>
