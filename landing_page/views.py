@@ -11,3 +11,6 @@ def swarm_simulation(request):
 
 def hardware_dashboard(request):
     return render(request, 'landing_page/hardware_dashboard.html')
+
+def why_drone(request):
+    return render(request, 'landing_page/why_drone.html')

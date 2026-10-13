@@ -3,9 +3,25 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
+    <meta name="description" content="Marcos Oliveira - Engenharia Mecatrônica (UFSC). Robótica autônoma com ROS 2 e PX4, sistemas embarcados, PCB em KiCad, FPGA e automação industrial.">
+    <meta name="theme-color" content="#0d6efd">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:title" content="Marcos Oliveira - Engenharia Mecatrônica & Robótica">
+    <meta property="og:description" content="Firmware embarcado, ROS 2 / micro-ROS, simulação SITL, enxames de drones e automação industrial.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230d6efd'/%3E%3Ctext x='32' y='44' font-size='34' font-family='Arial' font-weight='700' text-anchor='middle' fill='white'%3EM%3C/text%3E%3C/svg%3E">
+
+    <style>
+        /* Evita que os títulos fiquem escondidos atrás da navbar fixa */
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+        section[id] { scroll-margin-top: 80px; }
+        @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+        .badge a { text-decoration: none; color: inherit; }
+        .badge a:hover, .badge a:focus-visible { text-decoration: underline; }
+    </style>
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
@@ -36,19 +52,25 @@
                     
                     <!-- Links para as novas aplicações interativas -->
                     <li class="nav-item">
-                        <a class="nav-link text-primary fw-bold" href="{% url 'swarm_simulation' %}" target="_blank">
-                            <i class="bi bi-box-seam me-1"></i> Simulação 3D
+                        <a class="nav-link text-primary fw-bold" href="{% url 'swarm_simulation' %}" target="_blank" rel="noopener noreferrer">
+                            <i aria-hidden="true" class="bi bi-box-seam me-1"></i> Simulação 3D
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-primary fw-bold" href="{% url 'hardware_dashboard' %}" target="_blank">
-                            <i class="bi bi-activity me-1"></i> Dashboard Foxglove
+                        <a class="nav-link text-primary fw-bold" href="{% url 'hardware_dashboard' %}" target="_blank" rel="noopener noreferrer">
+                            <i aria-hidden="true" class="bi bi-activity me-1"></i> Dashboard Foxglove
                         </a>
+                    </li>
+                       <li class="nav-item">
+                        <a class="nav-link text-primary fw-bold" href="{% url 'why_drone' %}" target="_blank" rel="noopener noreferrer">
+                            <i aria-hidden="true" class="bi bi-fan me-1"></i> O que são drones?
+                        </a>
+                    
                     </li>
                 </ul>
                 <div class="d-flex align-items-center gap-2">
-                    <a class="btn btn-outline-primary rounded-pill px-3" href="https://github.com" target="_blank">
-                        <i class="bi bi-github me-1"></i> GitHub
+                    <a class="btn btn-outline-primary rounded-pill px-3" href="https://github.com" target="_blank" rel="noopener noreferrer">
+                        <i aria-hidden="true" class="bi bi-github me-1"></i> GitHub
                     </a>
                     <a class="btn btn-primary rounded-pill px-4" href="#contact">Contato</a>
                 </div>
@@ -57,12 +79,12 @@
     </nav>
 
     <!-- Hero Section / Apresentação -->
-    <section id="intro" class="position-relative overflow-hidden py-5">
+    <section id="intro" class="position-relative overflow-hidden py-5 pt-navbar">
         <div class="container-lg">
             <!-- Badges de Atuação -->
             <div class="row justify-content-center mb-3">
                 <div class="col-auto d-flex gap-2 flex-wrap justify-content-center">
-                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2">Mecatrônica UFSC</span>
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2"><a target="_blank" rel="noopener noreferrer" href="https://mecatronica.ufsc.br/">Mecatrônica UFSC</a></span>
                     <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2">Robótica & ROS 2</span>
                     <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2">Sistemas Embarcados</span>
                 </div>
@@ -86,12 +108,12 @@
             <div class="row justify-content-center">
                 <div class="col-lg-10 text-center">
                     <div class="crop-container rounded shadow-lg overflow-hidden">
-                        <img src="{% static 'landing_page/robotics_hero.jpg' %}" class="img-fluid crop" alt="Simulação e Sistemas de Robótica">
+                        <img src="{% static 'landing_page/drone.png' %}" class="img-fluid crop" alt="Simulação e Sistemas de Robótica" fetchpriority="high" decoding="async">
                     </div>
                 </div>
             </div>
         </div>
-        <div class="div-behind"></div>
+       
     </section>
 
     <!-- Métricas & Destaques de Trajetória -->
@@ -124,43 +146,55 @@
                 </div>
             </div>
 
-            <!-- Competência 1: Robótica Autônoma & Software -->
-            <div class="row justify-content-center align-items-center g-5 mb-5 py-4 border-bottom">
-                <div class="col-lg-6">
-                    <div class="d-flex align-items-center gap-3 mb-3">
-                        <div class="bg-primary text-white p-3 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                            <i class="bi bi-diagram-3-fill fs-4"></i>
-                        </div>
-                        <h3 class="fw-bold mb-0">Robótica Autônoma & Middleware</h3>
+           <!-- Competência 1: Robótica Autônoma & Software -->
+        <div class="row justify-content-center align-items-center g-5 mb-5 py-4 border-bottom">
+            <div class="col-lg-6">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <div class="bg-primary text-white p-3 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                        <i aria-hidden="true" class="bi bi-diagram-3-fill fs-4"></i>
                     </div>
-                    <p class="text-muted mb-4">Desenvolvimento de arquiteturas distribuídas e controle avançado para robôs terrestres e aéreos em ROS 2 e micro-ROS.</p>
-                    <ul class="list-unstyled">
-                        <li class="mb-3 d-flex align-items-start">
-                            <i class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
-                            <span><strong>PX4 Autopilot & Control Offboard:</strong> Navegação autônoma de veículos aéreos, malhas de controle e integração via `px4_ros_com`.</span>
-                        </li>
-                        <li class="mb-3 d-flex align-items-start">
-                            <i class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
-                            <span><strong>Simulação SITL & Ambientes Virtuais:</strong> Gazebo, `ros_gz_bridge` e monitoramento de dados via Foxglove Studio e QGroundControl.</span>
-                        </li>
-                        <li class="mb-3 d-flex align-items-start">
-                            <i class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
-                            <span><strong>Percepção & Visão Computacional:</strong> Pipelines OpenCV em C++/Python e SLAM para estimativa de pose e rastreamento.</span>
-                        </li>
-                    </ul>
+                    <h3 class="fw-bold mb-0">Robótica Autônoma & Middleware</h3>
                 </div>
-                <div class="col-lg-5">
+                <p class="text-muted mb-4">Desenvolvimento de arquiteturas distribuídas e controle avançado para robôs terrestres e aéreos em ROS 2 e micro-ROS.</p>
+                
+                <ul class="list-unstyled mb-4">
+                    <li class="mb-3 d-flex align-items-start">
+                        <i aria-hidden="true" class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                        <span><strong>PX4 Autopilot & Control Offboard:</strong> Navegação autônoma de veículos aéreos, malhas de controle e integração via <code>px4_ros_com</code>.</span>
+                    </li>
+                    <li class="mb-3 d-flex align-items-start">
+                        <i aria-hidden="true" class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                        <span><strong>Simulação SITL & Ambientes Virtuais:</strong> Gazebo, <code>ros_gz_bridge</code> e monitoramento de dados via Foxglove Studio e QGroundControl.</span>
+                    </li>
+                    <li class="mb-3 d-flex align-items-start">
+                        <i aria-hidden="true" class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                        <span><strong>Percepção & Visão Computacional:</strong> Pipelines OpenCV em C++/Python e SLAM para estimativa de pose e rastreamento.</span>
+                    </li>
+                </ul>
+
+            <div class="ratio ratio-16x9 rounded shadow-sm overflow-hidden mt-3">
+            <iframe 
+                src="https://www.youtube-nocookie.com/embed/eRzdGD2vgkU?rel=0" 
+                title="Demonstração do Projeto PX4 & ROS 2" 
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen>
+            </iframe>
+            </div>
+        </div>     
+            <div class="col-lg-5">
                     <div class="p-4 bg-light rounded shadow-sm border">
-                        <h5 class="fw-bold mb-3 text-secondary"><i class="bi bi-code-slash me-2"></i>Stack Prático</h5>
+                        <h5 class="fw-bold mb-3 text-secondary"><i aria-hidden="true" class="bi bi-code-slash me-2"></i>Stack Prático</h5>
                         <div class="d-flex flex-wrap gap-2">
-                            <span class="badge bg-white text-dark border px-3 py-2">ROS 2</span>
-                            <span class="badge bg-white text-dark border px-3 py-2">micro-ROS</span>
-                            <span class="badge bg-white text-dark border px-3 py-2">PX4</span>
-                            <span class="badge bg-white text-dark border px-3 py-2">Gazebo SITL</span>
-                            <span class="badge bg-white text-dark border px-3 py-2">C++</span>
-                            <span class="badge bg-white text-dark border px-3 py-2">Python</span>
-                            <span class="badge bg-white text-dark border px-3 py-2">OpenCV</span>
-                            <span class="badge bg-white text-dark border px-3 py-2">Foxglove</span>
+                            <span class="badge bg-white text-dark border px-3 py-2"><a target="_blank" rel="noopener noreferrer" href="https://github.com/ros2">ROS 2</a></span>
+                            <span class="badge bg-white text-dark border px-3 py-2"><a target="_blank" rel="noopener noreferrer" href="https://github.com/micro-ROS">micro-ROS</a></span>
+                            <span class="badge bg-white text-dark border px-3 py-2"><a target="_blank" rel="noopener noreferrer" href="https://github.com/PX4/PX4-Autopilot">PX4</a></span>
+                            <span class="badge bg-white text-dark border px-3 py-2"><a target="_blank" rel="noopener noreferrer" href="https://gazebosim.org/">Gazebo SITL</a></span>
+                            <span class="badge bg-white text-dark border px-3 py-2"><a target="_blank" rel="noopener noreferrer" href="https://isocpp.org/">C++</a></span>
+                            <span class="badge bg-white text-dark border px-3 py-2"><a target="_blank" rel="noopener noreferrer" href="https://www.python.org/">Python</a></span>
+                            <span class="badge bg-white text-dark border px-3 py-2"><a target="_blank" rel="noopener noreferrer" href="https://opencv.org/">OpenCV</a></span>
+                            <span class="badge bg-white text-dark border px-3 py-2"><a target="_blank" rel="noopener noreferrer" href="https://foxglove.dev/">Foxglove</a></span>
                         </div>
                     </div>
                 </div>
@@ -171,37 +205,37 @@
                 <div class="col-lg-6">
                     <div class="d-flex align-items-center gap-3 mb-3">
                         <div class="bg-primary text-white p-3 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                            <i class="bi bi-cpu-fill fs-4"></i>
+                            <i aria-hidden="true" class="bi bi-cpu-fill fs-4"></i>
                         </div>
                         <h3 class="fw-bold mb-0">Sistemas Embarcados & Eletrônica</h3>
                     </div>
                     <p class="text-muted mb-4">Projetos de placas de circuito impresso (PCB) e firmware de tempo real para aquisição de sensores e atuação de motores.</p>
                     <ul class="list-unstyled">
                         <li class="mb-3 d-flex align-items-start">
-                            <i class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                            <i aria-hidden="true" class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
                             <span><strong>Microcontroladores & Firmware:</strong> ESP32, STM32, Raspberry Pi e integração de placas de voo (Kakute H7).</span>
                         </li>
                         <li class="mb-3 d-flex align-items-start">
-                            <i class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                            <i aria-hidden="true" class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
                             <span><strong>PCB Design & Comunicação:</strong> Projetos schematics/layout em KiCad, barramentos I2C, SPI, UART, CAN e ExpressLRS.</span>
                         </li>
                         <li class="mb-3 d-flex align-items-start">
-                            <i class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                            <i aria-hidden="true" class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
                             <span><strong>Lógica Digital em FPGA:</strong> Desenvolvimento em VHDL no Intel Quartus Prime para FPGAs Cyclone IV e MAX 10 (DE10-Lite).</span>
                         </li>
                     </ul>
                 </div>
                 <div class="col-lg-5">
                     <div class="p-4 bg-light rounded shadow-sm border">
-                        <h5 class="fw-bold mb-3 text-secondary"><i class="bi bi-tools me-2"></i>Ferramentas de Hardware</h5>
+                        <h5 class="fw-bold mb-3 text-secondary"><i aria-hidden="true" class="bi bi-tools me-2"></i>Ferramentas de Hardware</h5>
                         <div class="d-flex flex-wrap gap-2">
-                            <span class="badge bg-white text-dark border px-3 py-2">KiCad</span>
-                            <span class="badge bg-white text-dark border px-3 py-2">PlatformIO</span>
-                            <span class="badge bg-white text-dark border px-3 py-2">ESP32</span>
-                            <span class="badge bg-white text-dark border px-3 py-2">STM32</span>
-                            <span class="badge bg-white text-dark border px-3 py-2">VHDL</span>
-                            <span class="badge bg-white text-dark border px-3 py-2">Quartus Prime</span>
-                            <span class="badge bg-white text-dark border px-3 py-2">ExpressLRS</span>
+                            <span class="badge bg-white text-dark border px-3 py-2"><a target="_blank" rel="noopener noreferrer" href="https://docs.kicad.org/">Kicad</a></span>
+                            <span class="badge bg-white text-dark border px-3 py-2"><a target="_blank" rel="noopener noreferrer" href="https://platformio.org/">PlatformIO</a></span>
+                            <span class="badge bg-white text-dark border px-3 py-2"><a target="_blank" rel="noopener noreferrer" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/">ESP32</a></span>
+                            <span class="badge bg-white text-dark border px-3 py-2"><a target="_blank" rel="noopener noreferrer" href="https://www.st.com/en/microcontrollers.html">STM32</a></span>
+                            <span class="badge bg-white text-dark border px-3 py-2"><a target="_blank" rel="noopener noreferrer" href="https://www.vhdl.org/">VHDL</a></span>
+                            <span class="badge bg-white text-dark border px-3 py-2"><a target="_blank" rel="noopener noreferrer" href="https://www.intel.com/content/www/us/en/software/programmable/quartus-prime.html">Quartus Prime</a></span>
+                            <span class="badge bg-white text-dark border px-3 py-2"><a target="_blank" rel="noopener noreferrer" href="https://www.expresslrs.com/">ExpressLRS</a></span>
                         </div>
                     </div>
                 </div>
@@ -212,29 +246,29 @@
                 <div class="col-lg-6">
                     <div class="d-flex align-items-center gap-3 mb-3">
                         <div class="bg-primary text-white p-3 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                            <i class="bi bi-gear-wide-connected fs-4"></i>
+                            <i aria-hidden="true" class="bi bi-gear-wide-connected fs-4"></i>
                         </div>
                         <h3 class="fw-bold mb-0">Controle, Modelagem & Automação</h3>
                     </div>
                     <p class="text-muted mb-4">Sintonia de malhas de controle dinâmico, simulação física de sistemas mecatrônicos e automação industrial.</p>
                     <ul class="list-unstyled">
                         <li class="mb-3 d-flex align-items-start">
-                            <i class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                            <i aria-hidden="true" class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
                             <span><strong>Teoria de Controle & Cinemática:</strong> Controladores em espaço de estados, observadores de Luenberger, cinemática direta/inversa.</span>
                         </li>
                         <li class="mb-3 d-flex align-items-start">
-                            <i class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                            <i aria-hidden="true" class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
                             <span><strong>Simulação Dinâmica & Elétrica:</strong> Modelagem em MATLAB, Simulink, OpenModelica, Hopsan e PSIM.</span>
                         </li>
                         <li class="mb-3 d-flex align-items-start">
-                            <i class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                            <i aria-hidden="true" class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
                             <span><strong>Automação Industrial & PLCs:</strong> Programação em Ladder e Structured Text (ST) usando CODESYS e EcoStruxure.</span>
                         </li>
                     </ul>
                 </div>
                 <div class="col-lg-5">
                     <div class="p-4 bg-light rounded shadow-sm border">
-                        <h5 class="fw-bold mb-3 text-secondary"><i class="bi bi-activity me-2"></i>Softwares & Ambientes</h5>
+                        <h5 class="fw-bold mb-3 text-secondary"><i aria-hidden="true" class="bi bi-activity me-2"></i>Softwares & Ambientes</h5>
                         <div class="d-flex flex-wrap gap-2">
                             <span class="badge bg-white text-dark border px-3 py-2">MATLAB / Simulink</span>
                             <span class="badge bg-white text-dark border px-3 py-2">OpenModelica</span>
@@ -263,22 +297,22 @@
             <div class="row justify-content-center align-items-center g-5">
                 <div class="col-lg-6">
                     <h3 class="fw-bold mb-3">Enxames de Drones Autônomos (LASC / UFSC)</h3>
-                    <p class="text-muted mb-4">Desenvolvimento de arquiteturas descentralizadas de formação líder-seguidor utilizando PX4 Autopilot, ROS 2 (`px4_ros_com`) e Gazebo SITL para validação em ambiente simulado e real.</p>
+                    <p class="text-muted mb-4">Desenvolvimento de arquiteturas descentralizadas de formação líder-seguidor utilizando PX4 Autopilot, ROS 2 (<code>px4_ros_com</code>) e Gazebo SITL para validação em ambiente simulado e real.</p>
                     
                     <ul class="list-unstyled">
                         <li class="mb-3 d-flex align-items-start">
-                            <i class="bi bi-check2-square text-primary me-2 fs-5"></i>
+                            <i aria-hidden="true" class="bi bi-check2-square text-primary me-2 fs-5"></i>
                             <span><strong>Sistema Cyber-Físico:</strong> Rover e drones integrando micro-ROS via Wi-Fi AP em ESP32 com MPU6050.</span>
                         </li>
                         <li class="mb-3 d-flex align-items-start">
-                            <i class="bi bi-check2-square text-primary me-2 fs-5"></i>
+                            <i aria-hidden="true" class="bi bi-check2-square text-primary me-2 fs-5"></i>
                             <span><strong>Draconis Eletrônica:</strong> Gestão de equipe e desenvolvimento de subsistemas de energia e sinal para competição SAE.</span>
                         </li>
                     </ul>
                 </div>
 
                 <div class="col-lg-5">
-                    <img src="{% static 'landing_page/drone_swarm.jpg' %}" class="img-fluid rounded shadow" alt="Visualização Foxglove / Gazebo">
+                    <img src="{% static 'landing_page/drone_swarm.jpg' %}" class="img-fluid rounded shadow" alt="Visualização Foxglove / Gazebo" loading="lazy" decoding="async">
                 </div>
             </div>
         </div>
@@ -288,9 +322,9 @@
     <section id="contact" class="bg-primary text-white py-5">
         <div class="container-lg text-center py-4">
             <h2 class="fw-bold mb-3">Vamos conversar ou colaborar num projeto?</h2>
-            <p class="lead mb-4 text-white-50">Aberto a conexões nas áreas de robótica, desenvolvimento embarcado e automação.</p>
+            <p class="lead mb-4 text-white">Aberto a conexões nas áreas de robótica, desenvolvimento embarcado e automação.</p>
             <a href="mailto:seu-email@exemplo.com" class="btn btn-light btn-lg px-5 rounded-pill fw-semibold">
-                <i class="bi bi-envelope-fill me-2"></i>Enviar E-mail
+                <i aria-hidden="true" class="bi bi-envelope-fill me-2"></i>Enviar E-mail
             </a>
         </div>
     </section>
@@ -304,8 +338,8 @@
                     <li class="nav-item"><a href="#intro" class="nav-link px-2 text-muted">Início</a></li>
                     <li class="nav-item"><a href="#skills" class="nav-link px-2 text-muted">Competências</a></li>
                     <li class="nav-item"><a href="#projects" class="nav-link px-2 text-muted">Projetos</a></li>
-                    <li class="nav-item"><a href="https://github.com" target="_blank" class="nav-link px-2 text-muted">GitHub</a></li>
-                    <li class="nav-item"><a href="https://linkedin.com" target="_blank" class="nav-link px-2 text-muted">LinkedIn</a></li>
+                    <li class="nav-item"><a href="https://github.com" target="_blank" rel="noopener noreferrer" class="nav-link px-2 text-muted">GitHub</a></li>
+                    <li class="nav-item"><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="nav-link px-2 text-muted">LinkedIn</a></li>
                 </ul>
             </div>
         </div>

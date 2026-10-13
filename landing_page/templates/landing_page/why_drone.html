@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="description" content="Marcos Oliveira - Engenharia Mecatrônica (UFSC). Robótica autônoma com ROS 2 e PX4, sistemas embarcados, PCB em KiCad, FPGA e automação industrial.">
+    <meta name="theme-color" content="#0d6efd">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:title" content="Marcos Oliveira - Engenharia Mecatrônica & Robótica">
+    <meta property="og:description" content="Firmware embarcado, ROS 2 / micro-ROS, simulação SITL, enxames de drones e automação industrial.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230d6efd'/%3E%3Ctext x='32' y='44' font-size='34' font-family='Arial' font-weight='700' text-anchor='middle' fill='white'%3EM%3C/text%3E%3C/svg%3E">
+
+    <style>
+        /* Evita que os títulos fiquem escondidos atrás da navbar fixa */
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+        section[id] { scroll-margin-top: 80px; }
+        @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+        .badge a { text-decoration: none; color: inherit; }
+        .badge a:hover, .badge a:focus-visible { text-decoration: underline; }
+    </style>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'landing_page/index.css' %}">
+    <title>Marcos Oliveira - Engenharia Mecatrônica & Robótica</title>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-white sticky-top border-bottom">
+        <div class="container-lg">
+            <a class="navbar-brand fw-bold" href="#"><span class="text-primary">Marcos</span>.dev</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+                aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Início</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'index' %}#skills">Competências</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'index' %}#projects">Projetos</a></li>
+                    
+                    <!-- Links para as novas aplicações interativas -->
+                    <li class="nav-item">
+                        <a class="nav-link text-primary fw-bold" href="{% url 'swarm_simulation' %}" target="_blank" rel="noopener noreferrer">
+                            <i aria-hidden="true" class="bi bi-box-seam me-1"></i> Simulação 3D
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-primary fw-bold" href="{% url 'hardware_dashboard' %}" target="_blank" rel="noopener noreferrer">
+                            <i aria-hidden="true" class="bi bi-activity me-1"></i> Dashboard Foxglove
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-primary fw-bold" href="{% url 'why_drone' %}" target="_blank" rel="noopener noreferrer">
+                            <i aria-hidden="true" class="bi bi-fan me-1"></i> O que são drones?
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center gap-2">
+                    <a class="btn btn-outline-primary rounded-pill px-3" href="https://github.com" target="_blank" rel="noopener noreferrer">
+                        <i aria-hidden="true" class="bi bi-github me-1"></i> GitHub
+                    </a>
+                    <a class="btn btn-primary rounded-pill px-4" href="#contact">Contato</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section / Apresentação -->
+    <section id="intro" class="position-relative overflow-hidden py-5 pt-navbar">
+        <div class="container-lg">
+            <!-- Badges de Atuação -->
+            <div class="row justify-content-center mb-3">
+                <div class="col-auto d-flex gap-2 flex-wrap justify-content-center">
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2"><a target="_blank" rel="noopener noreferrer" href="https://mecatronica.ufsc.br/">Mecatrônica UFSC</a></span>
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2">Robótica & ROS 2</span>
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2">Sistemas Embarcados</span>
+                </div>
+            </div>
+
+            <!-- Título Principal -->
+            <div class="row justify-content-center">
+                <div class="col-lg-9 text-center">
+                    <h1 class="display-4 fw-bold mb-3">Engenharia Mecatrônica & Robótica Autônoma</h1>
+                    <p class="lead text-muted mb-4">Desenvolvimento de firmware embarcado, arquiteturas ROS 2 / micro-ROS, simulação SITL em Gazebo, controle de enxames de drones e sistemas de automação industrial.</p>
+                    
+                    <!-- Call To Action -->
+                    <div class="d-flex justify-content-center gap-3 mb-5">
+                        <a href="#projects" class="btn btn-primary btn-lg rounded-pill px-4">Ver Projetos</a>
+                        <a href="#contact" class="btn btn-outline-secondary btn-lg rounded-pill px-4">Entrar em Contato</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Imagem em Destaque / Banner de Projeto -->
+            <div class="row justify-content-center">
+                <div class="col-lg-10 text-center">
+                    <div class="crop-container rounded shadow-lg overflow-hidden">
+                        <img src="{% static 'landing_page/drone.png' %}" class="img-fluid crop" alt="Simulação e Sistemas de Robótica" fetchpriority="high" decoding="async">
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    <!-- ============================================================
+     Seção: O que são drones?
+     Colar em index.html, entre #highlights e #skills.
+     Opcional: adicionar no menu
+     <li class="nav-item"><a class="nav-link" href="{% url 'index' %}#drones">Drones</a></li>
+     ============================================================ -->
+<section id="drones" class="py-5">
+    <div class="container-lg">
+
+        <!-- Título -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8 text-center">
+                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2 mb-3">Fundamentos</span>
+                <h2 class="fw-bold display-6">O que são drones?</h2>
+                <p class="text-muted lead">
+                    Drones são veículos aéreos não tripulados (VANTs, ou <em>UAVs</em>) capazes de voar de forma
+                    remotamente pilotada ou autônoma, combinando mecânica, eletrônica embarcada e software de controle.
+                </p>
+            </div>
+        </div>
+
+        <!-- Como funciona -->
+        <div class="row justify-content-center align-items-center g-5 mb-5">
+            <div class="col-lg-6">
+                <h3 class="fw-bold mb-3">Como um drone voa?</h3>
+                <p class="text-muted mb-4">
+                    Em um multirrotor, o voo é controlado variando a rotação de cada motor. Um laço de controle
+                    roda centenas de vezes por segundo, lê os sensores e ajusta o empuxo para manter a estabilidade.
+                </p>
+                <ul class="list-unstyled">
+                    <li class="mb-3 d-flex align-items-start">
+                        <i aria-hidden="true" class="bi bi-1-circle-fill text-primary me-2 fs-5"></i>
+                        <span><strong>Sensoriamento:</strong> IMU (acelerômetro e giroscópio), magnetômetro, barômetro e GPS estimam atitude, altitude e posição.</span>
+                    </li>
+                    <li class="mb-3 d-flex align-items-start">
+                        <i aria-hidden="true" class="bi bi-2-circle-fill text-primary me-2 fs-5"></i>
+                        <span><strong>Controle:</strong> a controladora de voo (ex.: PX4) compara o estado atual com o desejado e calcula a correção, tipicamente com malhas PID em cascata.</span>
+                    </li>
+                    <li class="mb-3 d-flex align-items-start">
+                        <i aria-hidden="true" class="bi bi-3-circle-fill text-primary me-2 fs-5"></i>
+                        <span><strong>Atuação:</strong> os ESCs convertem os comandos em potência para os motores. Pares de hélices girando em sentidos opostos permitem girar (<em>yaw</em>), inclinar (<em>roll</em>/<em>pitch</em>) e subir.</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="p-4 bg-light rounded shadow-sm border">
+                    <h5 class="fw-bold mb-3 text-secondary"><i aria-hidden="true" class="bi bi-boxes me-2"></i>Componentes principais</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2"><i aria-hidden="true" class="bi bi-dot text-primary"></i><strong>Frame:</strong> estrutura que sustenta tudo</li>
+                        <li class="mb-2"><i aria-hidden="true" class="bi bi-dot text-primary"></i><strong>Motores e hélices:</strong> geram o empuxo</li>
+                        <li class="mb-2"><i aria-hidden="true" class="bi bi-dot text-primary"></i><strong>ESCs:</strong> controlam a velocidade dos motores</li>
+                        <li class="mb-2"><i aria-hidden="true" class="bi bi-dot text-primary"></i><strong>Controladora de voo:</strong> o "cérebro" (ex.: Kakute H7)</li>
+                        <li class="mb-2"><i aria-hidden="true" class="bi bi-dot text-primary"></i><strong>Sensores e GPS:</strong> percepção do estado do drone</li>
+                        <li class="mb-2"><i aria-hidden="true" class="bi bi-dot text-primary"></i><strong>Rádio / telemetria:</strong> enlace com o piloto (ex.: ExpressLRS)</li>
+                        <li class="mb-0"><i aria-hidden="true" class="bi bi-dot text-primary"></i><strong>Bateria:</strong> geralmente LiPo, define a autonomia</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- ===================== Baterias ===================== -->
+        <div class="row justify-content-center align-items-center g-5 mb-5 pb-4 border-bottom">
+            <div class="col-lg-6">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <div class="bg-primary text-white p-3 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                        <i aria-hidden="true" class="bi bi-battery-charging fs-4"></i>
+                    </div>
+                    <h3 class="fw-bold mb-0">Baterias</h3>
+                </div>
+                <p class="text-muted mb-4">
+                    A bateria é o maior limitador de um drone elétrico: quanto mais energia, mais peso, e mais peso exige mais empuxo.
+                    O projeto é sempre um equilíbrio entre autonomia, potência e massa.
+                </p>
+                <ul class="list-unstyled">
+                    <li class="mb-3 d-flex align-items-start">
+                        <i aria-hidden="true" class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                        <span><strong>LiPo (polímero de lítio):</strong> alta taxa de descarga e boa relação potência/peso, por isso dominam os multirrotores.</span>
+                    </li>
+                    <li class="mb-3 d-flex align-items-start">
+                        <i aria-hidden="true" class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                        <span><strong>Li-ion:</strong> maior densidade de energia e menor potência de pico. Comum em drones de longa autonomia.</span>
+                    </li>
+                    <li class="mb-3 d-flex align-items-start">
+                        <i aria-hidden="true" class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                        <span><strong>Cuidados:</strong> usar carregador balanceador, não descarregar demais e armazenar parcialmente carregada. Baterias de lítio podem inchar e pegar fogo se danificadas.</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-5">
+                <div class="p-4 bg-light rounded shadow-sm border">
+                    <h5 class="fw-bold mb-3 text-secondary"><i aria-hidden="true" class="bi bi-card-list me-2"></i>Como ler a etiqueta</h5>
+                    <dl class="mb-0">
+                        <dt>Células (ex.: 4S)</dt>
+                        <dd class="text-muted small">Número de células em série. Cada uma tem cerca de 3,7 V nominais (4,2 V cheia), então 4S ≈ 14,8 V.</dd>
+                        <dt>Capacidade (ex.: 5000 mAh)</dt>
+                        <dd class="text-muted small">Quanta carga a bateria armazena. Mais mAh significa mais autonomia, porém mais peso.</dd>
+                        <dt>Taxa C (ex.: 50C)</dt>
+                        <dd class="text-muted small mb-0">Corrente máxima contínua como múltiplo da capacidade. Precisa atender ao pico de consumo dos motores.</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+ 
+        <!-- ===================== Sensoriamento ===================== -->
+        <div class="row justify-content-center align-items-center g-5 mb-5 pb-4 border-bottom flex-lg-row-reverse">
+            <div class="col-lg-6">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <div class="bg-primary text-white p-3 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                        <i aria-hidden="true" class="bi bi-speedometer2 fs-4"></i>
+                    </div>
+                    <h3 class="fw-bold mb-0">Sensoriamento</h3>
+                </div>
+                <p class="text-muted mb-4">
+                    Nenhum sensor sozinho é confiável o bastante. A controladora combina várias medições, cada uma com seus
+                    pontos fortes e fracos, para estimar o estado do drone com precisão.
+                </p>
+                <ul class="list-unstyled">
+                    <li class="mb-3 d-flex align-items-start">
+                        <i aria-hidden="true" class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                        <span><strong>IMU:</strong> acelerômetro e giroscópio medem aceleração e velocidade angular em alta frequência, mas acumulam erro (deriva) com o tempo.</span>
+                    </li>
+                    <li class="mb-3 d-flex align-items-start">
+                        <i aria-hidden="true" class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                        <span><strong>GNSS, barômetro e magnetômetro:</strong> dão referências absolutas de posição, altitude e direção, que corrigem a deriva da IMU.</span>
+                    </li>
+                    <li class="mb-3 d-flex align-items-start">
+                        <i aria-hidden="true" class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                        <span><strong>Fusão sensorial:</strong> um filtro de Kalman estendido (EKF) combina tudo em uma única estimativa. O PX4 usa o EKF2 para isso.</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-5">
+                <div class="p-4 bg-light rounded shadow-sm border">
+                    <h5 class="fw-bold mb-3 text-secondary"><i aria-hidden="true" class="bi bi-eye me-2"></i>Sensores adicionais</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2"><i aria-hidden="true" class="bi bi-dot text-primary"></i><strong>Fluxo óptico:</strong> velocidade horizontal sem GPS (ambientes internos)</li>
+                        <li class="mb-2"><i aria-hidden="true" class="bi bi-dot text-primary"></i><strong>LiDAR / ultrassom:</strong> altura precisa em relação ao solo</li>
+                        <li class="mb-2"><i aria-hidden="true" class="bi bi-dot text-primary"></i><strong>Câmeras:</strong> visão computacional, SLAM e rastreamento</li>
+                        <li class="mb-0"><i aria-hidden="true" class="bi bi-dot text-primary"></i><strong>Sensores de corrente e tensão:</strong> monitoram a bateria em tempo real</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+ 
+        <!-- ===================== Frame e controle ===================== -->
+        <div class="row justify-content-center align-items-center g-5 mb-5 pb-4 border-bottom">
+            <div class="col-lg-6">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <div class="bg-primary text-white p-3 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                        <i aria-hidden="true" class="bi bi-bounding-box-circles fs-4"></i>
+                    </div>
+                    <h3 class="fw-bold mb-0">Frame e controle</h3>
+                </div>
+                <p class="text-muted mb-4">
+                    A estrutura define como as forças são distribuídas, e o controle decide quanto empuxo cada motor deve gerar.
+                    Os dois precisam ser projetados juntos.
+                </p>
+                <ul class="list-unstyled">
+                    <li class="mb-3 d-flex align-items-start">
+                        <i aria-hidden="true" class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                        <span><strong>Frame:</strong> geralmente em fibra de carbono, leve e rígido. A configuração (X, +, H, hexa, octo) define o <em>mixer</em>, que distribui os comandos entre os motores.</span>
+                    </li>
+                    <li class="mb-3 d-flex align-items-start">
+                        <i aria-hidden="true" class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                        <span><strong>Motor e hélice:</strong> o conjunto precisa gerar empuxo bem acima do peso total (razão empuxo/peso de pelo menos 2:1 é uma regra comum).</span>
+                    </li>
+                    <li class="mb-3 d-flex align-items-start">
+                        <i aria-hidden="true" class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                        <span><strong>Controle em cascata:</strong> malhas externas (posição e velocidade) mais lentas comandam malhas internas (atitude e taxa angular) mais rápidas.</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-5">
+                <div class="p-4 bg-light rounded shadow-sm border">
+                    <h5 class="fw-bold mb-3 text-secondary"><i aria-hidden="true" class="bi bi-diagram-2 me-2"></i>Cadeia de controle</h5>
+                    <ol class="mb-0 text-muted small ps-3">
+                        <li class="mb-2"><strong>Posição</strong>: onde o drone deve estar</li>
+                        <li class="mb-2"><strong>Velocidade</strong>: quão rápido deve ir</li>
+                        <li class="mb-2"><strong>Atitude</strong>: inclinação necessária (roll/pitch/yaw)</li>
+                        <li class="mb-2"><strong>Taxa angular</strong>: rotação rápida corrigida pelo giroscópio</li>
+                        <li class="mb-0"><strong>Mixer → ESCs → motores</strong>: comandos finais de potência</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+ 
+
+        <!-- Tipos -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-lg-8 text-center">
+                <h3 class="fw-bold">Principais tipos</h3>
+            </div>
+        </div>
+        <div class="row g-4 mb-5">
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border shadow-sm">
+                    <div class="card-body">
+                        <i aria-hidden="true" class="bi bi-fan fs-2 text-primary"></i>
+                        <h5 class="fw-bold mt-2">Multirrotor</h5>
+                        <p class="text-muted small mb-0">Quadricópteros, hexacópteros etc. Decolam na vertical e pairam no ar. São os mais comuns em pesquisa, inspeção e filmagem.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border shadow-sm">
+                    <div class="card-body">
+                        <i aria-hidden="true" class="bi bi-airplane fs-2 text-primary"></i>
+                        <h5 class="fw-bold mt-2">Asa fixa</h5>
+                        <p class="text-muted small mb-0">Parecidos com aviões. Muito eficientes e com grande autonomia, ideais para mapeamento de grandes áreas, mas não pairam.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border shadow-sm">
+                    <div class="card-body">
+                        <i aria-hidden="true" class="bi bi-arrow-repeat fs-2 text-primary"></i>
+                        <h5 class="fw-bold mt-2">VTOL / Híbrido</h5>
+                        <p class="text-muted small mb-0">Decolam na vertical como multirrotores e cruzam como asa fixa, combinando flexibilidade e eficiência.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border shadow-sm">
+                    <div class="card-body">
+                        <i aria-hidden="true" class="bi bi-wind fs-2 text-primary"></i>
+                        <h5 class="fw-bold mt-2">Helicóptero</h5>
+                        <p class="text-muted small mb-0">Rotor principal com passo variável. Maior capacidade de carga e eficiência em portes maiores, porém mecanicamente mais complexo.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aplicações -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-lg-8 text-center">
+                <h3 class="fw-bold">Onde são usados</h3>
+            </div>
+        </div>
+        <div class="row g-3 justify-content-center mb-5">
+            <div class="col-6 col-md-4 col-lg-2 text-center">
+                <div class="p-3 bg-light rounded border h-100">
+                    <i aria-hidden="true" class="bi bi-tree fs-3 text-primary"></i>
+                    <p class="small fw-semibold mb-0 mt-2">Agricultura de precisão</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2 text-center">
+                <div class="p-3 bg-light rounded border h-100">
+                    <i aria-hidden="true" class="bi bi-lightning-charge fs-3 text-primary"></i>
+                    <p class="small fw-semibold mb-0 mt-2">Inspeção de linhas e estruturas</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2 text-center">
+                <div class="p-3 bg-light rounded border h-100">
+                    <i aria-hidden="true" class="bi bi-map fs-3 text-primary"></i>
+                    <p class="small fw-semibold mb-0 mt-2">Mapeamento e topografia</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2 text-center">
+                <div class="p-3 bg-light rounded border h-100">
+                    <i aria-hidden="true" class="bi bi-heart-pulse fs-3 text-primary"></i>
+                    <p class="small fw-semibold mb-0 mt-2">Busca e resgate</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2 text-center">
+                <div class="p-3 bg-light rounded border h-100">
+                    <i aria-hidden="true" class="bi bi-box-seam fs-3 text-primary"></i>
+                    <p class="small fw-semibold mb-0 mt-2">Logística e entregas</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2 text-center">
+                <div class="p-3 bg-light rounded border h-100">
+                    <i aria-hidden="true" class="bi bi-mortarboard fs-3 text-primary"></i>
+                    <p class="small fw-semibold mb-0 mt-2">Pesquisa e robótica de enxames</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aviso regulatório + CTA -->
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="alert alert-primary d-flex align-items-start gap-3 mb-4" role="note">
+                    <i aria-hidden="true" class="bi bi-info-circle-fill fs-4"></i>
+                    <div>
+                        <strong>Voar com segurança e dentro da lei.</strong>
+                        No Brasil, a operação de drones é regulada pela ANAC, DECEA e ANATEL. Antes de voar, confira
+                        as regras de registro, cadastro do equipamento e espaço aéreo para o seu tipo de operação.
+                    </div>
+                </div>
+                <div class="text-center">
+                    <p class="text-muted">Quer ver esses conceitos na prática?</p>
+                    <a href="{% url 'swarm_simulation' %}" target="_blank" rel="noopener noreferrer" class="btn btn-primary rounded-pill px-4 me-2">
+                        <i aria-hidden="true" class="bi bi-box-seam me-1"></i> Abrir simulação 3D
+                    </a>
+                    <a href="#projects" class="btn btn-outline-primary rounded-pill px-4">Ver projetos</a>
+                </div>
+            </div>
+        </div>
+
+        
+
+    </div>
+</section>
+
+    <!-- Banner de Contato / Chamada Final -->
+    <section id="contact" class="bg-primary text-white py-5">
+        <div class="container-lg text-center py-4">
+            <h2 class="fw-bold mb-3">Vamos conversar ou colaborar num projeto?</h2>
+            <p class="lead mb-4 text-white">Aberto a conexões nas áreas de robótica, desenvolvimento embarcado e automação.</p>
+            <a href="mailto:seu-email@exemplo.com" class="btn btn-light btn-lg px-5 rounded-pill fw-semibold">
+                <i aria-hidden="true" class="bi bi-envelope-fill me-2"></i>Enviar E-mail
+            </a>
+        </div>
+    </section>
+
+    <!-- Rodapé -->
+    <footer class="bg-white py-4 border-top">
+        <div class="container-lg">
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center">
+                <p class="mb-2 mb-sm-0 text-muted">© 2026 Marcos Oliveira. Engenharia Mecatrônica UFSC.</p>
+                <ul class="nav">
+                    <li class="nav-item"><a href="#intro" class="nav-link px-2 text-muted">Início</a></li>
+                    <li class="nav-item"><a href="#skills" class="nav-link px-2 text-muted">Competências</a></li>
+                    <li class="nav-item"><a href="#projects" class="nav-link px-2 text-muted">Projetos</a></li>
+                    <li class="nav-item"><a href="#why_drone" class="nav-link px-2 text-muted">O que são drones?</a></li>
+                    <li class="nav-item"><a href="https://github.com" target="_blank" rel="noopener noreferrer" class="nav-link px-2 text-muted">GitHub</a></li>
+                    <li class="nav-item"><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="nav-link px-2 text-muted">LinkedIn</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

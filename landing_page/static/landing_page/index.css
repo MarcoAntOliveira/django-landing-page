@@ -1,32 +1,41 @@
-section {
-    padding: 60px 0;
-    position: relative; /* Garante que o .div-behind fique alinhado à section */
-}
-
-/* Container que limita o tamanho da imagem */
-.crop-container {
-    width: 100%;
-    max-width: 1000px;
-    height: 400px;
-    overflow: hidden;
+/* 1. Secção Hero */
+#intro {
     position: relative;
-    margin: 0 auto;
+    padding-top: 120px; /* Garante que o Navbar fixo não tapa o texto */
+    padding-bottom: 80px;
 }
 
-/* Imagem ajustada corretamente */
-.crop-container img {
+/* 2. Contentor da Imagem */
+.crop-container {
+    position: relative;
+    z-index: 3; /* Imagem fica por cima do fundo cinzento */
     width: 100%;
-    height: 100%;
-    object-fit: cover; /* Recorta a imagem proporcionalmente sem distorcer */
+    max-width: 850px; /* Largura ideal para o pergaminho */
+    margin: 0 auto;
+    border-radius: 12px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+    background-color: #fff; /* Evita transparências */
 }
 
-/* Div de fundo com ajuste de z-index */
+/* 3. Imagem Sem Cortar (Remove restrições de altura) */
+.crop-container img.crop {
+    width: 100% !important;
+    height: auto !important; /* Mantém a proporção real completa */
+    max-height: none !important; /* REMOVE o limite de altura que cortava o pergaminho */
+    display: block;
+    object-fit: contain !important;
+}
+
+/* 4. Fundo Cinzento Decorativo (Posicionado estritamente atrás do cartão) */
 .div-behind {
-    z-index: 1; /* z-index positivo costuma ser mais seguro que valores negativos */
     position: absolute;
+    z-index: 1; /* Fica estritamente por trás */
     background: #dee7e8;
-    top: 60%;
-    left: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 55%; /* Começa mais abaixo para NÃO tapar o título nem o texto */
     width: 90%;
-    height: 105%;
+    max-width: 1000px;
+    height: 40%; /* Altura reduzida para servir apenas de sombra de fundo */
+    border-radius: 24px;
 }

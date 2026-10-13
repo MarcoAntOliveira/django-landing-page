@@ -87,15 +87,24 @@
         }
 
         .pulse-beacon {
-            box-shadow: 0 0 0 0 rgba(0, 242, 254, 0.7);
-            animation: pulse-ring 1.8s infinite;
+            transform-box: fill-box;
+            transform-origin: center;
+            animation: pulse-ring 1.8s ease-out infinite;
         }
 
         @keyframes pulse-ring {
-            0% { box-shadow: 0 0 0 0 rgba(0, 242, 254, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(0, 242, 254, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 242, 254, 0); }
+            0% { transform: scale(1); opacity: 1; }
+            70% { transform: scale(2.2); opacity: 0.25; }
+            100% { transform: scale(1); opacity: 1; }
         }
+
+        .hw-module rect.hw-frame { transition: stroke-width .15s, filter .15s; }
+        .hw-module.selected rect.hw-frame {
+            stroke-width: 4;
+            filter: drop-shadow(0 0 8px currentColor);
+        }
+        .hw-module:focus-visible { outline: none; }
+        .hw-module:focus-visible rect.hw-frame { stroke-width: 4; }
     </style>
 </head>
 
@@ -299,8 +308,8 @@
                             <path d="M 450 120 L 370 120 L 370 200" fill="none" stroke="#f59e0b" stroke-width="2" opacity="0.6"/>
 
                             <!-- Module 1: Kakute H7 FC -->
-                            <g onclick="selectHardwareComponent('kakute')" class="cursor-pointer group">
-                                <rect x="50" y="60" width="120" height="120" rx="10" fill="#0f172a" stroke="#00f2fe" stroke-width="2" class="group-hover:stroke-cyan-300 transition"/>
+                            <g data-module="kakute" role="button" tabindex="0" aria-label="Inspect kakute" style="color:#00f2fe" onclick="selectHardwareComponent('kakute')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectHardwareComponent('kakute')}" class="hw-module cursor-pointer group">
+                                <rect x="50" y="60" width="120" height="120" rx="10" fill="#0f172a" stroke="#00f2fe" stroke-width="2" class="hw-frame group-hover:stroke-cyan-300 transition"/>
                                 <rect x="70" y="80" width="80" height="80" rx="6" fill="#1e293b"/>
                                 <text x="110" y="115" font-family="JetBrains Mono" font-size="11" fill="#00f2fe" font-weight="bold" text-anchor="middle">STM32H7</text>
                                 <text x="110" y="132" font-family="JetBrains Mono" font-size="9" fill="#94a3b8" text-anchor="middle">Kakute H7</text>
@@ -311,8 +320,8 @@
                             </g>
 
                             <!-- Module 2: ESP32 micro-ROS -->
-                            <g onclick="selectHardwareComponent('esp32')" class="cursor-pointer group">
-                                <rect x="50" y="220" width="120" height="110" rx="10" fill="#0f172a" stroke="#10b981" stroke-width="2" class="group-hover:stroke-emerald-300 transition"/>
+                            <g data-module="esp32" role="button" tabindex="0" aria-label="Inspect esp32" style="color:#10b981" onclick="selectHardwareComponent('esp32')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectHardwareComponent('esp32')}" class="hw-module cursor-pointer group">
+                                <rect x="50" y="220" width="120" height="110" rx="10" fill="#0f172a" stroke="#10b981" stroke-width="2" class="hw-frame group-hover:stroke-emerald-300 transition"/>
                                 <rect x="70" y="235" width="80" height="60" rx="4" fill="#1e293b"/>
                                 <text x="110" y="262" font-family="JetBrains Mono" font-size="11" fill="#10b981" font-weight="bold" text-anchor="middle">ESP32-WROOM</text>
                                 <text x="110" y="278" font-family="JetBrains Mono" font-size="9" fill="#94a3b8" text-anchor="middle">micro-ROS AP</text>
@@ -321,16 +330,16 @@
                             </g>
 
                             <!-- Module 3: MPU6050 IMU + ExpressLRS -->
-                            <g onclick="selectHardwareComponent('elrs')" class="cursor-pointer group">
-                                <rect x="330" y="60" width="120" height="100" rx="10" fill="#0f172a" stroke="#f59e0b" stroke-width="2" class="group-hover:stroke-amber-300 transition"/>
+                            <g data-module="elrs" role="button" tabindex="0" aria-label="Inspect elrs" style="color:#f59e0b" onclick="selectHardwareComponent('elrs')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectHardwareComponent('elrs')}" class="hw-module cursor-pointer group">
+                                <rect x="330" y="60" width="120" height="100" rx="10" fill="#0f172a" stroke="#f59e0b" stroke-width="2" class="hw-frame group-hover:stroke-amber-300 transition"/>
                                 <text x="390" y="105" font-family="JetBrains Mono" font-size="11" fill="#f59e0b" font-weight="bold" text-anchor="middle">ExpressLRS 2.4G</text>
                                 <text x="390" y="122" font-family="JetBrains Mono" font-size="9" fill="#94a3b8" text-anchor="middle">CRSF Protocol</text>
                                 <circle cx="450" cy="100" r="4" fill="#f59e0b" class="pulse-beacon"/>
                             </g>
 
                             <!-- Module 4: Power Management / BEC -->
-                            <g onclick="selectHardwareComponent('power')" class="cursor-pointer group">
-                                <rect x="330" y="200" width="120" height="130" rx="10" fill="#0f172a" stroke="#a855f7" stroke-width="2" class="group-hover:stroke-purple-300 transition"/>
+                            <g data-module="power" role="button" tabindex="0" aria-label="Inspect power" style="color:#a855f7" onclick="selectHardwareComponent('power')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectHardwareComponent('power')}" class="hw-module cursor-pointer group">
+                                <rect x="330" y="200" width="120" height="130" rx="10" fill="#0f172a" stroke="#a855f7" stroke-width="2" class="hw-frame group-hover:stroke-purple-300 transition"/>
                                 <text x="390" y="255" font-family="JetBrains Mono" font-size="11" fill="#a855f7" font-weight="bold" text-anchor="middle">4S Power / BEC</text>
                                 <text x="390" y="272" font-family="JetBrains Mono" font-size="9" fill="#94a3b8" text-anchor="middle">5V 3A Regulated</text>
                                 <circle cx="450" cy="240" r="4" fill="#a855f7" class="pulse-beacon"/>
@@ -456,11 +465,24 @@
         let imuChart, powerChart;
         let logicCanvas, logicCtx;
         let logicPhase = 0;
+        let currentLogicKey = 'kakute';
+        // Illustrative bit patterns per module (not captured data)
+        const logicPatterns = {
+            kakute: { color: '#00f2fe', bit: 10, speed: 1.2, bits: [1,0,1,1,0,0,1,0,1,0,1,1,1,0,0,1] }, // UART 8N1-like
+            esp32:  { color: '#10b981', bit: 8,  speed: 1.0, bits: [1,1,0,1,0,0,1,1,0,1,0,1,1,0,0,0] }, // I2C-like
+            elrs:   { color: '#f59e0b', bit: 6,  speed: 1.6, bits: [1,0,0,1,0,1,1,0,1,0,0,0,1,1,0,1] }, // CRSF burst
+            power:  { color: '#a855f7', bit: 40, speed: 0.6, bits: [1,1,1,1,0,1,1,1] }                    // PG / enable
+        };
 
         // 3D Point Cloud Visualizer Initialization
         function initPointCloud3D() {
             const container = document.getElementById('pointcloud-container');
             if (!container) return;
+            if (typeof THREE === 'undefined' || !THREE.OrbitControls) {
+                const l = document.getElementById('canvas-loader');
+                if (l) l.innerHTML = '<p class="text-xs font-mono text-rose-400">Could not load Three.js / OrbitControls (check network).</p>';
+                return;
+            }
 
             pcScene = new THREE.Scene();
             pcScene.background = new THREE.Color(0x050811);
@@ -578,8 +600,10 @@
                 if (trajectoryLine) trajectoryLine.rotation.y += 0.002;
             }
 
-            pcControls.update();
-            pcRenderer.render(pcScene, pcCamera);
+            if (!document.hidden) {
+                pcControls.update();
+                pcRenderer.render(pcScene, pcCamera);
+            }
         }
 
         function onPointCloudResize() {
@@ -593,12 +617,16 @@
 
         function togglePointCloudRotation() {
             isRotating = !isRotating;
-            document.getElementById('btn-rotate').classList.toggle('text-cyan-400');
+            const b = document.getElementById('btn-rotate');
+            b.classList.toggle('text-cyan-400', isRotating);
+            b.classList.toggle('text-slate-300', !isRotating);
+            b.setAttribute('aria-pressed', String(isRotating));
         }
 
         function resetPointCloudCamera() {
             pcCamera.position.set(0, 10, 14);
             pcControls.target.set(0, 0, 0);
+            pcControls.update();
         }
 
         function toggleGridOccupancy() {
@@ -608,15 +636,48 @@
             document.getElementById('btn-grid').innerText = `Occupancy Grid: ${showOccupancyGrid ? 'ON' : 'OFF'}`;
         }
 
+        let sweepRunning = false;
         function triggerLaserScanPulse() {
-            if (!pointCloudMesh) return;
-            const positions = pointCloudMesh.geometry.attributes.position.array;
+            if (!pointCloudMesh || sweepRunning) return;
+            sweepRunning = true;
 
-            for (let i = 0; i < positions.length; i += 3) {
-                positions[i] += (Math.random() - 0.5) * 0.15;
-                positions[i + 2] += (Math.random() - 0.5) * 0.15;
+            const attr = pointCloudMesh.geometry.attributes.position;
+            const positions = attr.array;
+            const base = positions.slice();            // original positions
+            const colorAttr = pointCloudMesh.geometry.attributes.color;
+            const baseColors = colorAttr.array.slice();
+            const duration = 1400;
+            const start = performance.now();
+
+            function step(now) {
+                const t = Math.min((now - start) / duration, 1);
+                const sweepAngle = t * Math.PI * 2 - Math.PI;
+                const amp = 0.18 * (1 - t);             // jitter decays to zero
+
+                for (let i = 0; i < positions.length; i += 3) {
+                    positions[i]     = base[i]     + (Math.random() - 0.5) * amp;
+                    positions[i + 2] = base[i + 2] + (Math.random() - 0.5) * amp;
+
+                    // brighten the points the sweep line has just passed
+                    const a = Math.atan2(base[i + 2], base[i]);
+                    let d = sweepAngle - a;
+                    d = Math.atan2(Math.sin(d), Math.cos(d));
+                    const glow = d >= 0 && d < 0.5 ? 1 - d / 0.5 : 0;
+                    colorAttr.array[i]     = baseColors[i]     + (1 - baseColors[i])     * glow;
+                    colorAttr.array[i + 1] = baseColors[i + 1] + (1 - baseColors[i + 1]) * glow;
+                    colorAttr.array[i + 2] = baseColors[i + 2] + (1 - baseColors[i + 2]) * glow;
+                }
+                attr.needsUpdate = true;
+                colorAttr.needsUpdate = true;
+
+                if (t < 1) requestAnimationFrame(step);
+                else {
+                    positions.set(base); colorAttr.array.set(baseColors);
+                    attr.needsUpdate = true; colorAttr.needsUpdate = true;
+                    sweepRunning = false;
+                }
             }
-            pointCloudMesh.geometry.attributes.position.needsUpdate = true;
+            requestAnimationFrame(step);
         }
 
         // Initialize Live Telemetry Charts (Chart.js)
@@ -665,7 +726,7 @@
                 }
             });
 
-            setInterval(updateChartsData, 200);
+            setInterval(() => { if (!document.hidden) updateChartsData(); }, 200);
         }
 
         function updateChartsData() {
@@ -696,23 +757,40 @@
             if (!logicCanvas) return;
             logicCtx = logicCanvas.getContext('2d');
 
+            function sizeLogicCanvas() {
+                const dpr = window.devicePixelRatio || 1;
+                const w = logicCanvas.clientWidth, h = logicCanvas.clientHeight;
+                logicCanvas.width = Math.max(1, Math.round(w * dpr));
+                logicCanvas.height = Math.max(1, Math.round(h * dpr));
+                logicCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            }
+            sizeLogicCanvas();
+            window.addEventListener('resize', sizeLogicCanvas);
+
             function drawTrace() {
-                if (!logicCanvas || !logicCtx) return;
+                const w = logicCanvas.clientWidth, h = logicCanvas.clientHeight;
+                const pat = logicPatterns[currentLogicKey] || logicPatterns.kakute;
 
-                logicCtx.clearRect(0, 0, logicCanvas.width, logicCanvas.height);
-                logicCtx.strokeStyle = '#00f2fe';
+                logicCtx.clearRect(0, 0, w, h);
+                logicCtx.strokeStyle = pat.color;
                 logicCtx.lineWidth = 1.5;
-
+                logicCtx.lineJoin = 'miter';
                 logicCtx.beginPath();
-                let x = 0;
-                logicPhase += 2;
 
-                while (x < logicCanvas.width) {
-                    let high = ((x + logicPhase) % 30) > 15;
-                    let y = high ? 10 : logicCanvas.height - 10;
-                    if (x === 0) logicCtx.moveTo(x, y);
-                    else logicCtx.lineTo(x, y);
-                    x += 10;
+                logicPhase += pat.speed;
+                const hi = 8, lo = h - 8;
+                const bit = pat.bit;
+                let prevY = null;
+                for (let x = 0; x <= w; x += 1) {
+                    const idx = Math.floor((x + logicPhase) / bit);
+                    const high = pat.bits[((idx % pat.bits.length) + pat.bits.length) % pat.bits.length];
+                    const y = high ? hi : lo;
+                    if (prevY === null) logicCtx.moveTo(x, y);
+                    else {
+                        if (y !== prevY) logicCtx.lineTo(x, prevY);
+                        logicCtx.lineTo(x, y);
+                    }
+                    prevY = y;
                 }
                 logicCtx.stroke();
                 requestAnimationFrame(drawTrace);
@@ -775,11 +853,22 @@
             document.getElementById('compSub').innerText = data.sub;
             document.getElementById('compVoltage').innerText = data.voltage;
             document.getElementById('compDesc').innerText = data.desc;
+            document.getElementById('compIcon').style.color = logicPatterns[key].color;
 
             const pinsContainer = document.getElementById('compPins');
-            pinsContainer.innerHTML = data.pins.map(p => 
-                `<div class="flex justify-between text-cyan-300"><span>${p.name}</span><span>${p.val}</span></div>`
-            ).join('');
+            pinsContainer.innerHTML = '';
+            data.pins.forEach(p => {
+                const row = document.createElement('div');
+                row.className = 'flex justify-between gap-3 text-cyan-300';
+                const a = document.createElement('span'); a.textContent = p.name;
+                const b = document.createElement('span'); b.className = 'text-right'; b.textContent = p.val;
+                row.append(a, b);
+                pinsContainer.appendChild(row);
+            });
+
+            currentLogicKey = key;
+            document.querySelectorAll('.hw-module').forEach(g =>
+                g.classList.toggle('selected', g.dataset.module === key));
         }
 
         // Workbench Tabs Logic
@@ -817,7 +906,7 @@ sensor_msgs__msg__Imu imu_msg;
 
 void setup() {
     Serial.begin(115200);
-    set_microros_wifi_transports("ESP32_uROS_102", "mecatronics2026", "192.168.4.1", 8888);
+    set_microros_wifi_transports("ESP32_uROS_102", "YOUR_WIFI_PASSWORD", "192.168.4.1", 8888);
     
     rclc_support_t support;
     rclc_support_init(&support, 0, NULL, &allocator);

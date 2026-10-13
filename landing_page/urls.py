@@ -5,4 +5,5 @@ urlpatterns = [
     path('', views.index_view, name='index'),
     path('simulacao-enxame/', views.swarm_simulation, name='swarm_simulation'),
     path('telemetria-hardware/', views.hardware_dashboard, name='hardware_dashboard'),
+    path('porque-drones/', views.why_drone, name='why_drone'),
 ]
